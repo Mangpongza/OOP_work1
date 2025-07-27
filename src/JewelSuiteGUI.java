@@ -5,189 +5,206 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.Point;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
-import javax.swing.JFrame;
-import javax.swing.JComponent;
+import java.awt.geom.RoundRectangle2D;
 
 public class JewelSuiteGUI extends JFrame {
-
     private JPanel gridPanel;
     private JTextField fluidContactField;
     private JButton loadFileButton;
     private JButton calculateButton;
-    private JLabel fileStatusLabel;
+    private JTextField fileStatusField;
+    private Point initialClick;
 
-    // สีสำหรับแสดงระดับแก๊สตามโจทย์
-    private final Color NO_GAS_COLOR = Color.RED;        // ไม่มีแก๊ส
-    private final Color LOW_GAS_COLOR = Color.YELLOW;     // แก๊สน้อยกว่า 50%
-    private final Color HIGH_GAS_COLOR = Color.GREEN;     // แก๊สมากกว่า 50%
+    // Modern color palette
+    private final Font MAIN_FONT = new Font("Segoe UI", Font.PLAIN, 16);
+    private final Font TITLE_FONT = new Font("Segoe UI", Font.BOLD, 26);
+    private final Font SUB_FONT = new Font("Segoe UI", Font.BOLD, 18);
 
     public JewelSuiteGUI() {
         initializeGUI();
     }
 
     private void initializeGUI() {
-
-
         setTitle("Jewel Suite - Gas Volume Calculator");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new BorderLayout());
-        setSize(1000, 700);
+        setLayout(new BorderLayout(0, 0));
+        setSize(1200, 800);
+        getContentPane().setBackground(Setting.SECONDARY_COLOR);
 
-        createTopPanel();
+        createTopBar();
         createCenterPanel();
-        createBottomPanel();
+        createBottomBar();
 
         setLocationRelativeTo(null);
     }
 
-    private void createTopPanel() {
-        //
+    private void createTopBar() {
+        JPanel topBar = new JPanel();
+        topBar.setBackground(Setting.PRIMARY_COLOR);
+        topBar.setPreferredSize(new Dimension(getWidth(), 70));
+        topBar.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(0, 10, 0, 20);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        // เพิ่มไอคอนซ้ายบนสุด
+        JLabel iconLabel = new JLabel();
+        ImageIcon icon = new ImageIcon("src/dig.png");
+        Image img = icon.getImage().getScaledInstance(48, 48, Image.SCALE_SMOOTH);
+        iconLabel.setIcon(new ImageIcon(img));
+        topBar.add(iconLabel, gbc);
+        // ชื่อโปรแกรม
+        gbc.gridx = 1;
+        gbc.insets = new Insets(0, 0, 0, 0);
+        JLabel title = new JLabel("Jewel Suite - Gas Volume Calculator");
+        title.setFont(TITLE_FONT);
+        title.setForeground(Color.WHITE);
+        topBar.add(title, gbc);
+
+        add(topBar, BorderLayout.NORTH);
     }
 
     private void createCenterPanel() {
-        JPanel centerPanel = new JPanel(new BorderLayout());
-
-        // Legend Panel
-
-        JPanel legendPanel = new JPanel();
-        legendPanel.setBackground(Color.white); // สีน้ำตาล
-        legendPanel.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createLineBorder(new Color(139, 69, 19), 5), // ขอบสีน้ำตาล
-                "Legend",
-                TitledBorder.LEFT,
-                TitledBorder.TOP,
-                new Font("Arial", Font.BOLD, 12),
-                Color.BLACK // สีข้อความ "Legend"
-        ));
-
-        legendPanel.setLayout(new GridBagLayout());
-
-        legendPanel.setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0; // ทุกอย่างอยู่ในคอลัมน์แรก
-        gbc.anchor = GridBagConstraints.WEST; // จัดชิดซ้าย
-        gbc.insets = new Insets(2, 5, 2, 5);
-
-        gbc.weighty = 0.0; // นี่คือส่วนสำคัญ: แถวนี้จะดูดซับพื้นที่แนวตั้งพิเศษทั้งหมด
-        gbc.insets = new Insets(250, 6, 20, 5); // ตัวอย่าง: ขยับลงมา 20 pixels จากขอบบนของ legendPanel
-
-        gbc.gridy = 0; // แถวที่ 0
-        legendPanel.add(createLegendItem(NO_GAS_COLOR, "No Gas (0%)"), gbc);
-
-        // insets สำหรับ Legend Item ตัวถัดไป (อาจจะให้ระยะห่างระหว่างกันเท่าเดิม)
-        gbc.insets = new Insets(2, 6, 20, 5); // ระยะห่าง 2 pixels ด้านบน/ล่าง ระหว่าง item
-
-        gbc.gridy = 1; // แถวที่ 1
-        legendPanel.add(createLegendItem(LOW_GAS_COLOR, "Low Gas (<50%)"), gbc);
-
-        gbc.gridy = 2; // แถวที่ 2
-        legendPanel.add(createLegendItem(HIGH_GAS_COLOR, "High Gas (≥50%)"), gbc);
+        JPanel centerPanel = new JPanel(new BorderLayout(20, 0));
+        centerPanel.setBackground(Setting.SECONDARY_COLOR);
+        centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30));
 
         // Grid Panel
         JScrollPane scrollPane = new JScrollPane();
-        
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
         gridPanel = new JPanel();
-        gridPanel.setBackground(new Color(222, 184, 135));
-
-        JLabel instructionLabel = new JLabel("Please load dept.txt file to start", JLabel.CENTER);
-        instructionLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-        instructionLabel.setForeground(Color.GRAY);
-        gridPanel.add(instructionLabel);
-
+        gridPanel.setBackground(Color.WHITE);
+        gridPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Setting.PRIMARY_COLOR, 3, true),
+                BorderFactory.createEmptyBorder(15, 15, 15, 15)));
+        gridPanel.setLayout(new GridLayout(10, 20, 6, 6));
+        createSampleGrid();
         scrollPane.setViewportView(gridPanel);
+        scrollPane.setPreferredSize(new Dimension(900, 500));
+        scrollPane.getViewport().setBackground(Setting.SECONDARY_COLOR);
 
-        centerPanel.add(legendPanel, BorderLayout.EAST);
+        // Legend Panel
+        JPanel legendPanel = new JPanel();
+        legendPanel.setBackground(Setting.SECONDARY_COLOR);
+        legendPanel.setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createLineBorder(Setting.PRIMARY_COLOR, 2, true),
+                "Legend",
+                TitledBorder.LEFT,
+                TitledBorder.TOP,
+                SUB_FONT,
+                Setting.PRIMARY_COLOR
+        ));
+        legendPanel.setLayout(new BoxLayout(legendPanel, BoxLayout.Y_AXIS));
+        legendPanel.add(Box.createVerticalStrut(10));
+        legendPanel.add(createLegendItem(Setting.NO_GAS_COLOR, "No Gas (0%)"));
+        legendPanel.add(Box.createVerticalStrut(5));
+        legendPanel.add(createLegendItem(Setting.LOW_GAS_COLOR, "Low Gas (<50%)"));
+        legendPanel.add(Box.createVerticalStrut(5));
+        legendPanel.add(createLegendItem(Setting.HIGH_GAS_COLOR, "High Gas (≥50%)"));
+        legendPanel.add(Box.createVerticalGlue());
+        legendPanel.setAlignmentY(Component.TOP_ALIGNMENT);
+        legendPanel.setPreferredSize(new Dimension(200, 300));
+
         centerPanel.add(scrollPane, BorderLayout.CENTER);
-
+        centerPanel.add(legendPanel, BorderLayout.EAST);
         add(centerPanel, BorderLayout.CENTER);
     }
 
     private JPanel createLegendItem(Color color, String text) {
-        JPanel item = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
-        item.setBackground(Color.WHITE);
-
-        JPanel colorBox = new JPanel();
-        colorBox.setBackground(color);
-        colorBox.setPreferredSize(new Dimension(20, 20));
-        colorBox.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-
+        JPanel item = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
+        item.setBackground(Setting.SECONDARY_COLOR);
+        item.setAlignmentX(Component.LEFT_ALIGNMENT);
+        JPanel colorBox = new JPanel() {
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setColor(color);
+                g2.fillRoundRect(0, 0, 24, 24, 6, 6); // สี่เหลี่ยมขอบโค้งมน
+                g2.setColor(Color.DARK_GRAY);
+                g2.drawRoundRect(0, 0, 24, 24, 6, 6);
+            }
+        };
+        colorBox.setPreferredSize(new Dimension(26, 26));
         JLabel label = new JLabel(text);
-        label.setFont(new Font("Arial", Font.PLAIN, 11));
-
+        label.setFont(MAIN_FONT);
         item.add(colorBox);
         item.add(label);
-
         return item;
     }
 
-    private void createBottomPanel() {
-        JPanel buttomPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 15));
+    private void createBottomBar() {
+        JPanel bottomBar = new JPanel(new BorderLayout(20, 0));
+        bottomBar.setBackground(Setting.SECONDARY_COLOR);
+        bottomBar.setBorder(BorderFactory.createEmptyBorder(18, 30, 18, 30));
 
-        buttomPanel.setBorder(BorderFactory.createLineBorder(new Color(222, 184, 135), 5));
-
-
-
-        // 1. โหลดไฟล์ dept.txt
-        loadFileButton = new JButton(Setting.loadFileButton);
-        loadFileButton.setFont(new Font("Arial", Font.BOLD, 14));
-        loadFileButton.setBackground(new Color(70, 130, 180));
-        loadFileButton.setForeground(Color.WHITE);
-        loadFileButton.setPreferredSize(new Dimension(130, 35));
+        // Left: Load file + filename
+        JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
+        leftPanel.setOpaque(false);
+        loadFileButton = new JButton("Open File");
+        loadFileButton.setFont(SUB_FONT);
+        loadFileButton.setBackground(Setting.PRIMARY_COLOR);
+        loadFileButton.setForeground(Color.BLACK);
+        loadFileButton.setFocusPainted(false);
+        loadFileButton.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Setting.PRIMARY_COLOR, 1, true),
+                BorderFactory.createEmptyBorder(8, 18, 8, 18)));
+        loadFileButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         loadFileButton.addActionListener(new LoadFileListener());
+        leftPanel.add(loadFileButton);
 
-        fileStatusLabel = new JLabel("No file selected");
-        fileStatusLabel.setFont(new Font("Arial", Font.PLAIN, 12));
-        fileStatusLabel.setForeground(Color.GRAY);
+        fileStatusField = new JTextField("No file selected", 15);
+        fileStatusField.setFont(MAIN_FONT);
+        fileStatusField.setForeground(Color.GRAY);
+        fileStatusField.setEditable(false);
+        fileStatusField.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1, true),
+                BorderFactory.createEmptyBorder(6, 10, 6, 10)));
+        leftPanel.add(fileStatusField);
 
-        // 2. ปรับเปลี่ยนความลึก Fluid Contact
+        // Right: Fluid contact + calculate
+        JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 0));
+        rightPanel.setOpaque(false);
         JLabel fluidLabel = new JLabel("Fluid Contact Depth:");
-        fluidLabel.setFont(new Font("Arial", Font.BOLD, 12));
-
+        fluidLabel.setFont(SUB_FONT);
+        rightPanel.add(fluidLabel);
         fluidContactField = new JTextField("2500", 8);
-        fluidContactField.setFont(new Font("Arial", Font.PLAIN, 12));
-
+        fluidContactField.setFont(MAIN_FONT);
+        fluidContactField.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1, true),
+                BorderFactory.createEmptyBorder(6, 10, 6, 10)));
+        rightPanel.add(fluidContactField);
         JLabel meterLabel = new JLabel("meters");
-        meterLabel.setFont(new Font("Arial", Font.PLAIN, 12));
-
-        // 3. คำนวณปริมาตร
+        meterLabel.setFont(MAIN_FONT);
+        rightPanel.add(meterLabel);
         calculateButton = new JButton("Calculate");
-        calculateButton.setFont(new Font("Arial", Font.BOLD, 14));
-        calculateButton.setBackground(new Color(34, 139, 34));
-        calculateButton.setForeground(Color.WHITE);
-        calculateButton.setPreferredSize(new Dimension(100, 35));
+        calculateButton.setFont(SUB_FONT);
+        calculateButton.setBackground(Setting.ACCENT_COLOR);
+        calculateButton.setForeground(Color.BLACK);
+        calculateButton.setFocusPainted(false);
+        calculateButton.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Setting.ACCENT_COLOR, 1, true),
+                BorderFactory.createEmptyBorder(8, 18, 8, 18)));
+        calculateButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         calculateButton.setEnabled(false);
         calculateButton.addActionListener(new CalculateListener());
+        rightPanel.add(calculateButton);
 
-        buttomPanel.add(loadFileButton);
-        buttomPanel.add(fileStatusLabel);
-        buttomPanel.add(Box.createHorizontalStrut(20));
-        buttomPanel.add(fluidLabel);
-        buttomPanel.add(fluidContactField);
-        buttomPanel.add(meterLabel);
-        buttomPanel.add(Box.createHorizontalStrut(20));
-        buttomPanel.add(calculateButton);
-
-        add(buttomPanel, BorderLayout.SOUTH);
+        bottomBar.add(leftPanel, BorderLayout.WEST);
+        bottomBar.add(rightPanel, BorderLayout.EAST);
+        add(bottomBar, BorderLayout.SOUTH);
     }
 
     private class LoadFileListener implements ActionListener {
-
         @Override
         public void actionPerformed(ActionEvent e) {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileFilter(new FileNameExtensionFilter("Text files (*.txt)", "txt"));
-
             if (fileChooser.showOpenDialog(JewelSuiteGUI.this) == JFileChooser.APPROVE_OPTION) {
                 String fileName = fileChooser.getSelectedFile().getName();
-                fileStatusLabel.setText("File: " + fileName);
-                fileStatusLabel.setForeground(new Color(34, 139, 34));
+                fileStatusField.setText(fileName);
+                fileStatusField.setForeground(Setting.PRIMARY_COLOR);
                 calculateButton.setEnabled(true);
-
-                // สร้างตารางตัวอย่าง (จำลองการโหลดข้อมูล)
                 createSampleGrid();
             }
         }
@@ -195,83 +212,70 @@ public class JewelSuiteGUI extends JFrame {
 
     private void createSampleGrid() {
         gridPanel.removeAll();
-
-        // สร้างตาราง 10x20 ตัวอย่าง (แต่ละช่อง 150x150 เมตรตามโจทย์)
         int rows = 10;
         int cols = 20;
-        gridPanel.setLayout(new GridLayout(rows, cols, 1, 1));
-
         for (int i = 0; i < rows * cols; i++) {
             JPanel cell = createGridCell();
             gridPanel.add(cell);
         }
-
         gridPanel.revalidate();
         gridPanel.repaint();
     }
 
     private JPanel createGridCell() {
-        JPanel cell = new JPanel(new BorderLayout());
-
-        // สุ่มสีตามเงื่อนไข 3 ระดับตามโจทย์
+        JPanel cell = new JPanel(new BorderLayout()) {
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setColor(getBackground());
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 18, 18);
+            }
+        };
         double random = Math.random();
         Color cellColor;
         String percentage;
         String volume;
-
         if (random < 0.3) {
-            cellColor = NO_GAS_COLOR;
+            cellColor = Setting.NO_GAS_COLOR;
             percentage = "0%";
             volume = "0";
         } else if (random < 0.65) {
-            cellColor = LOW_GAS_COLOR;
+            cellColor = Setting.LOW_GAS_COLOR;
             percentage = "25%";
             volume = "562";
         } else {
-            cellColor = HIGH_GAS_COLOR;
+            cellColor = Setting.HIGH_GAS_COLOR;
             percentage = "75%";
             volume = "1688";
         }
-
         cell.setBackground(cellColor);
-        cell.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        cell.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         cell.setPreferredSize(new Dimension(50, 40));
-
-        // แสดงปริมาณแก๊สและเปอร์เซ็นต์ตามโจทย์
-        Color textColor = (cellColor == LOW_GAS_COLOR) ? Color.BLACK : Color.WHITE;
-
+        Color textColor = (cellColor == Setting.LOW_GAS_COLOR) ? Color.BLACK : Color.WHITE;
         JLabel percentLabel = new JLabel(percentage, JLabel.CENTER);
-        percentLabel.setFont(new Font("Arial", Font.BOLD, 8));
+        percentLabel.setFont(new Font("Segoe UI", Font.BOLD, 12));
         percentLabel.setForeground(textColor);
-
         JLabel volumeLabel = new JLabel(volume, JLabel.CENTER);
-        volumeLabel.setFont(new Font("Arial", Font.PLAIN, 7));
+        volumeLabel.setFont(new Font("Segoe UI", Font.PLAIN, 11));
         volumeLabel.setForeground(textColor);
-
         cell.add(percentLabel, BorderLayout.CENTER);
         cell.add(volumeLabel, BorderLayout.SOUTH);
-
         return cell;
     }
 
     private class CalculateListener implements ActionListener {
-
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
                 double fluidContact = Double.parseDouble(fluidContactField.getText());
-
-                // จำลองการคำนวณใหม่
                 JOptionPane.showMessageDialog(
                         JewelSuiteGUI.this,
                         "Calculation completed!\nFluid Contact: " + fluidContact + " meters",
                         "Calculation Result",
                         JOptionPane.INFORMATION_MESSAGE
                 );
-
-                // อัพเดตตารางใหม่
                 createSampleGrid();
-
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(
                         JewelSuiteGUI.this,
@@ -284,6 +288,9 @@ public class JewelSuiteGUI extends JFrame {
     }
 
     public static void main(String[] args) {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception ignored) {}
         new JewelSuiteGUI().setVisible(true);
     }
 }
