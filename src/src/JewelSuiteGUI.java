@@ -24,7 +24,7 @@ public class JewelSuiteGUI extends JFrame {
     }
 
     private void initializeGUI() {
-        setTitle("Jewel Suite - Gas Volume Calculator");
+        setTitle("Fuid Suite - Gas Volume Calculator");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
