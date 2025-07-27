@@ -27,6 +27,7 @@ public class JewelSuiteGUI extends JFrame {
         setTitle("Jewel Suite - Gas Volume Calculator");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
+        setSize(1000, 700);
 
         createTopPanel();
         createCenterPanel();
@@ -43,7 +44,7 @@ public class JewelSuiteGUI extends JFrame {
         JPanel centerPanel = new JPanel(new BorderLayout());
 
         // Legend Panel
-        JPanel legendPanel = new JPanel(new FlowLayout());
+        JPanel legendPanel = new JPanel();
         legendPanel.setBackground(Color.WHITE);
         legendPanel.setBorder(BorderFactory.createTitledBorder(
                 BorderFactory.createEtchedBorder(),
@@ -54,11 +55,28 @@ public class JewelSuiteGUI extends JFrame {
                 new Font("Arial", Font.BOLD, 12)
         ));
 
-        legendPanel.add(createLegendItem(NO_GAS_COLOR, "No Gas (0%)"));
-        legendPanel.add(Box.createHorizontalStrut(20));
-        legendPanel.add(createLegendItem(LOW_GAS_COLOR, "Low Gas (<50%)"));
-        legendPanel.add(Box.createHorizontalStrut(20));
-        legendPanel.add(createLegendItem(HIGH_GAS_COLOR, "High Gas (≥50%)"));
+        legendPanel.setLayout(new GridBagLayout());
+
+        legendPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0; // ทุกอย่างอยู่ในคอลัมน์แรก
+        gbc.anchor = GridBagConstraints.WEST; // จัดชิดซ้าย
+        gbc.insets = new Insets(2, 5, 2, 5);
+
+        gbc.weighty = 0.0; // นี่คือส่วนสำคัญ: แถวนี้จะดูดซับพื้นที่แนวตั้งพิเศษทั้งหมด
+        gbc.insets = new Insets(250, 6, 20, 5); // ตัวอย่าง: ขยับลงมา 20 pixels จากขอบบนของ legendPanel
+
+        gbc.gridy = 0; // แถวที่ 0
+        legendPanel.add(createLegendItem(NO_GAS_COLOR, "No Gas (0%)"), gbc);
+
+        // insets สำหรับ Legend Item ตัวถัดไป (อาจจะให้ระยะห่างระหว่างกันเท่าเดิม)
+        gbc.insets = new Insets(2, 6, 20, 5); // ระยะห่าง 2 pixels ด้านบน/ล่าง ระหว่าง item
+
+        gbc.gridy = 1; // แถวที่ 1
+        legendPanel.add(createLegendItem(LOW_GAS_COLOR, "Low Gas (<50%)"), gbc);
+
+        gbc.gridy = 2; // แถวที่ 2
+        legendPanel.add(createLegendItem(HIGH_GAS_COLOR, "High Gas (≥50%)"), gbc);
 
         // Grid Panel
         JScrollPane scrollPane = new JScrollPane();
