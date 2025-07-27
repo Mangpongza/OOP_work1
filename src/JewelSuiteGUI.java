@@ -78,7 +78,7 @@ public class JewelSuiteGUI extends JFrame {
                 BorderFactory.createLineBorder(Setting.PRIMARY_COLOR, 3, true),
                 BorderFactory.createEmptyBorder(15, 15, 15, 15)));
         gridPanel.setLayout(new GridLayout(10, 20, 6, 6));
-        createSampleGrid();
+        createEmptyGrid(); // สร้าง grid ว่างเปล่า (แต่มี cell)
         scrollPane.setViewportView(gridPanel);
         scrollPane.setPreferredSize(new Dimension(900, 500));
         scrollPane.getViewport().setBackground(Setting.SECONDARY_COLOR);
@@ -195,19 +195,20 @@ public class JewelSuiteGUI extends JFrame {
         add(bottomBar, BorderLayout.SOUTH);
     }
 
-    private class LoadFileListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setFileFilter(new FileNameExtensionFilter("Text files (*.txt)", "txt"));
-            if (fileChooser.showOpenDialog(JewelSuiteGUI.this) == JFileChooser.APPROVE_OPTION) {
-                String fileName = fileChooser.getSelectedFile().getName();
-                fileStatusField.setText(fileName);
-                fileStatusField.setForeground(Setting.PRIMARY_COLOR);
-                calculateButton.setEnabled(true);
-                createSampleGrid();
-            }
+    // เพิ่มเมธอดสร้าง grid ว่าง
+    private void createEmptyGrid() {
+        gridPanel.removeAll();
+        int rows = 10;
+        int cols = 20;
+        for (int i = 0; i < rows * cols; i++) {
+            JPanel cell = new JPanel();
+            cell.setBackground(Color.WHITE);
+            cell.setBorder(BorderFactory.createLineBorder(new Color(230,230,230), 1));
+            cell.setPreferredSize(new Dimension(50, 40));
+            gridPanel.add(cell);
         }
+        gridPanel.revalidate();
+        gridPanel.repaint();
     }
 
     private void createSampleGrid() {
@@ -262,6 +263,21 @@ public class JewelSuiteGUI extends JFrame {
         cell.add(percentLabel, BorderLayout.CENTER);
         cell.add(volumeLabel, BorderLayout.SOUTH);
         return cell;
+    }
+
+    private class LoadFileListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setFileFilter(new FileNameExtensionFilter("Text files (*.txt)", "txt"));
+            if (fileChooser.showOpenDialog(JewelSuiteGUI.this) == JFileChooser.APPROVE_OPTION) {
+                String fileName = fileChooser.getSelectedFile().getName();
+                fileStatusField.setText(fileName);
+                fileStatusField.setForeground(Setting.PRIMARY_COLOR);
+                calculateButton.setEnabled(true);
+                createSampleGrid(); // สร้าง grid หลังโหลดไฟล์
+            }
+        }
     }
 
     private class CalculateListener implements ActionListener {
