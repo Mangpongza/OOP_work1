@@ -50,6 +50,7 @@ public class JewelSuiteGUI extends JFrame {
                 "Legend",
                 TitledBorder.LEFT,
                 TitledBorder.TOP,
+
                 new Font("Arial", Font.BOLD, 12)
         ));
 
@@ -79,7 +80,7 @@ public class JewelSuiteGUI extends JFrame {
 
         scrollPane.setViewportView(gridPanel);
 
-        centerPanel.add(legendPanel, BorderLayout.NORTH);
+        centerPanel.add(legendPanel, BorderLayout.EAST);
         centerPanel.add(scrollPane, BorderLayout.CENTER);
 
         add(centerPanel, BorderLayout.CENTER);
