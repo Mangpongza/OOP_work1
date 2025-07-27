@@ -32,7 +32,6 @@ public class JewelSuiteGUI extends JFrame {
         createCenterPanel();
         createBottomPanel();
 
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
     }
 
@@ -42,7 +41,7 @@ public class JewelSuiteGUI extends JFrame {
         topPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // 1. โหลดไฟล์ dept.txt
-        loadFileButton = new JButton("Load dept.txt");
+        loadFileButton = new JButton(Setting.loadFileButton);
         loadFileButton.setFont(new Font("Arial", Font.BOLD, 14));
         loadFileButton.setBackground(new Color(70, 130, 180));
         loadFileButton.setForeground(Color.WHITE);
