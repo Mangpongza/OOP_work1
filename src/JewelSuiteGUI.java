@@ -24,7 +24,7 @@ public class JewelSuiteGUI extends JFrame {
     }
 
     private void initializeGUI() {
-        setTitle("Fuid Suite - Gas Volume Calculator");
+        setTitle("Jewel Suite - Gas Volume Calculator");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
@@ -36,51 +36,7 @@ public class JewelSuiteGUI extends JFrame {
     }
 
     private void createTopPanel() {
-        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 15));
-        topPanel.setBackground(new Color(240, 248, 255));
-        topPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-        // 1. โหลดไฟล์ dept.txt
-        loadFileButton = new JButton(Setting.loadFileButton);
-        loadFileButton.setFont(new Font("Arial", Font.BOLD, 14));
-        loadFileButton.setBackground(new Color(70, 130, 180));
-        loadFileButton.setForeground(Color.WHITE);
-        loadFileButton.setPreferredSize(new Dimension(130, 35));
-        loadFileButton.addActionListener(new LoadFileListener());
-
-        fileStatusLabel = new JLabel("No file selected");
-        fileStatusLabel.setFont(new Font("Arial", Font.PLAIN, 12));
-        fileStatusLabel.setForeground(Color.GRAY);
-
-        // 2. ปรับเปลี่ยนความลึก Fluid Contact
-        JLabel fluidLabel = new JLabel("Fluid Contact Depth:");
-        fluidLabel.setFont(new Font("Arial", Font.BOLD, 12));
-
-        fluidContactField = new JTextField("2500", 8);
-        fluidContactField.setFont(new Font("Arial", Font.PLAIN, 12));
-
-        JLabel meterLabel = new JLabel("meters");
-        meterLabel.setFont(new Font("Arial", Font.PLAIN, 12));
-
-        // 3. คำนวณปริมาตร
-        calculateButton = new JButton("Calculate");
-        calculateButton.setFont(new Font("Arial", Font.BOLD, 14));
-        calculateButton.setBackground(new Color(34, 139, 34));
-        calculateButton.setForeground(Color.WHITE);
-        calculateButton.setPreferredSize(new Dimension(100, 35));
-        calculateButton.setEnabled(false);
-        calculateButton.addActionListener(new CalculateListener());
-
-        topPanel.add(loadFileButton);
-        topPanel.add(fileStatusLabel);
-        topPanel.add(Box.createHorizontalStrut(20));
-        topPanel.add(fluidLabel);
-        topPanel.add(fluidContactField);
-        topPanel.add(meterLabel);
-        topPanel.add(Box.createHorizontalStrut(20));
-        topPanel.add(calculateButton);
-
-        add(topPanel, BorderLayout.NORTH);
+        //
     }
 
     private void createCenterPanel() {
@@ -148,8 +104,51 @@ public class JewelSuiteGUI extends JFrame {
     }
 
     private void createBottomPanel() {
-        // ตามโจทย์ไม่ได้ระบุให้มี bottom panel แสดงผลลัพธ์
-        // ดังนั้นจะไม่ใส่ส่วนนี้
+        JPanel buttomPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 15));
+        buttomPanel.setBackground(new Color(240, 248, 255));
+        buttomPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        // 1. โหลดไฟล์ dept.txt
+        loadFileButton = new JButton(Setting.loadFileButton);
+        loadFileButton.setFont(new Font("Arial", Font.BOLD, 14));
+        loadFileButton.setBackground(new Color(70, 130, 180));
+        loadFileButton.setForeground(Color.WHITE);
+        loadFileButton.setPreferredSize(new Dimension(130, 35));
+        loadFileButton.addActionListener(new LoadFileListener());
+
+        fileStatusLabel = new JLabel("No file selected");
+        fileStatusLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+        fileStatusLabel.setForeground(Color.GRAY);
+
+        // 2. ปรับเปลี่ยนความลึก Fluid Contact
+        JLabel fluidLabel = new JLabel("Fluid Contact Depth:");
+        fluidLabel.setFont(new Font("Arial", Font.BOLD, 12));
+
+        fluidContactField = new JTextField("2500", 8);
+        fluidContactField.setFont(new Font("Arial", Font.PLAIN, 12));
+
+        JLabel meterLabel = new JLabel("meters");
+        meterLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+
+        // 3. คำนวณปริมาตร
+        calculateButton = new JButton("Calculate");
+        calculateButton.setFont(new Font("Arial", Font.BOLD, 14));
+        calculateButton.setBackground(new Color(34, 139, 34));
+        calculateButton.setForeground(Color.WHITE);
+        calculateButton.setPreferredSize(new Dimension(100, 35));
+        calculateButton.setEnabled(false);
+        calculateButton.addActionListener(new CalculateListener());
+
+        buttomPanel.add(loadFileButton);
+        buttomPanel.add(fileStatusLabel);
+        buttomPanel.add(Box.createHorizontalStrut(20));
+        buttomPanel.add(fluidLabel);
+        buttomPanel.add(fluidContactField);
+        buttomPanel.add(meterLabel);
+        buttomPanel.add(Box.createHorizontalStrut(20));
+        buttomPanel.add(calculateButton);
+
+        add(buttomPanel, BorderLayout.SOUTH);
     }
 
     private class LoadFileListener implements ActionListener {
