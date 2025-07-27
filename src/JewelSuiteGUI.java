@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.geom.RoundRectangle2D;
 
 public class JewelSuiteGUI extends JFrame {
     private JPanel gridPanel;
@@ -13,7 +12,6 @@ public class JewelSuiteGUI extends JFrame {
     private JButton loadFileButton;
     private JButton calculateButton;
     private JTextField fileStatusField;
-    private Point initialClick;
 
     // Modern color palette
     private final Font MAIN_FONT = new Font("Segoe UI", Font.PLAIN, 16);
@@ -58,7 +56,7 @@ public class JewelSuiteGUI extends JFrame {
         gbc.insets = new Insets(0, 0, 0, 0);
         JLabel title = new JLabel("Jewel Suite - Gas Volume Calculator");
         title.setFont(TITLE_FONT);
-        title.setForeground(Color.WHITE);
+        title.setForeground(Color.BLACK);
         topBar.add(title, gbc);
 
         add(topBar, BorderLayout.NORTH);
@@ -69,19 +67,16 @@ public class JewelSuiteGUI extends JFrame {
         centerPanel.setBackground(Setting.SECONDARY_COLOR);
         centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30));
 
-        // Grid Panel
-        JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        // Grid Panel (no JScrollPane)
         gridPanel = new JPanel();
         gridPanel.setBackground(Color.WHITE);
         gridPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(Setting.PRIMARY_COLOR, 3, true),
                 BorderFactory.createEmptyBorder(15, 15, 15, 15)));
-        gridPanel.setLayout(new GridLayout(10, 20, 6, 6));
+        gridPanel.setLayout(new GridLayout(10, 20, 2, 2));
         createEmptyGrid(); // สร้าง grid ว่างเปล่า (แต่มี cell)
-        scrollPane.setViewportView(gridPanel);
-        scrollPane.setPreferredSize(new Dimension(900, 500));
-        scrollPane.getViewport().setBackground(Setting.SECONDARY_COLOR);
+        // เพิ่ม gridPanel ลงใน centerPanel ตรงๆ
+        centerPanel.add(gridPanel, BorderLayout.CENTER);
 
         // Legend Panel
         JPanel legendPanel = new JPanel();
@@ -105,7 +100,6 @@ public class JewelSuiteGUI extends JFrame {
         legendPanel.setAlignmentY(Component.TOP_ALIGNMENT);
         legendPanel.setPreferredSize(new Dimension(200, 300));
 
-        centerPanel.add(scrollPane, BorderLayout.CENTER);
         centerPanel.add(legendPanel, BorderLayout.EAST);
         add(centerPanel, BorderLayout.CENTER);
     }
@@ -204,7 +198,7 @@ public class JewelSuiteGUI extends JFrame {
             JPanel cell = new JPanel();
             cell.setBackground(Color.WHITE);
             cell.setBorder(BorderFactory.createLineBorder(new Color(230,230,230), 1));
-            cell.setPreferredSize(new Dimension(50, 40));
+            // ไม่ต้อง setPreferredSize เพื่อให้ cell responsive
             gridPanel.add(cell);
         }
         gridPanel.revalidate();
@@ -215,8 +209,10 @@ public class JewelSuiteGUI extends JFrame {
         gridPanel.removeAll();
         int rows = 10;
         int cols = 20;
+        gridPanel.setLayout(new GridLayout(rows, cols, 2, 2));
         for (int i = 0; i < rows * cols; i++) {
             JPanel cell = createGridCell();
+            // ไม่ต้อง setPreferredSize เพื่อให้ cell responsive
             gridPanel.add(cell);
         }
         gridPanel.revalidate();
