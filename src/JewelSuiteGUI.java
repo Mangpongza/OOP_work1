@@ -5,6 +5,12 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import javax.swing.JFrame;
+import javax.swing.JComponent;
 
 public class JewelSuiteGUI extends JFrame {
 
@@ -24,6 +30,8 @@ public class JewelSuiteGUI extends JFrame {
     }
 
     private void initializeGUI() {
+
+
         setTitle("Jewel Suite - Gas Volume Calculator");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -44,15 +52,16 @@ public class JewelSuiteGUI extends JFrame {
         JPanel centerPanel = new JPanel(new BorderLayout());
 
         // Legend Panel
+
         JPanel legendPanel = new JPanel();
-        legendPanel.setBackground(Color.WHITE);
+        legendPanel.setBackground(Color.white); // สีน้ำตาล
         legendPanel.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createEtchedBorder(),
+                BorderFactory.createLineBorder(new Color(139, 69, 19), 5), // ขอบสีน้ำตาล
                 "Legend",
                 TitledBorder.LEFT,
                 TitledBorder.TOP,
-
-                new Font("Arial", Font.BOLD, 12)
+                new Font("Arial", Font.BOLD, 12),
+                Color.BLACK // สีข้อความ "Legend"
         ));
 
         legendPanel.setLayout(new GridBagLayout());
@@ -80,16 +89,9 @@ public class JewelSuiteGUI extends JFrame {
 
         // Grid Panel
         JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createEtchedBorder(),
-                "Survey Area Grid",
-                TitledBorder.LEFT,
-                TitledBorder.TOP,
-                new Font("Arial", Font.BOLD, 12)
-        ));
-
+        
         gridPanel = new JPanel();
-        gridPanel.setBackground(Color.WHITE);
+        gridPanel.setBackground(new Color(222, 184, 135));
 
         JLabel instructionLabel = new JLabel("Please load dept.txt file to start", JLabel.CENTER);
         instructionLabel.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -124,8 +126,10 @@ public class JewelSuiteGUI extends JFrame {
 
     private void createBottomPanel() {
         JPanel buttomPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 15));
-        buttomPanel.setBackground(new Color(240, 248, 255));
-        buttomPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        buttomPanel.setBorder(BorderFactory.createLineBorder(new Color(222, 184, 135), 5));
+
+
 
         // 1. โหลดไฟล์ dept.txt
         loadFileButton = new JButton(Setting.loadFileButton);
