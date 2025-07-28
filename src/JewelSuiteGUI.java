@@ -13,11 +13,6 @@ public class JewelSuiteGUI extends JFrame {
     private JButton calculateButton;
     private JTextField fileStatusField;
 
-    // Modern color palette
-    private final Font MAIN_FONT = new Font("Segoe UI", Font.PLAIN, 16);
-    private final Font TITLE_FONT = new Font("Segoe UI", Font.BOLD, 26);
-    private final Font SUB_FONT = new Font("Segoe UI", Font.BOLD, 18);
-
     public JewelSuiteGUI() {
         initializeGUI();
     }
@@ -55,7 +50,7 @@ public class JewelSuiteGUI extends JFrame {
         gbc.gridx = 1;
         gbc.insets = new Insets(0, 0, 0, 0);
         JLabel title = new JLabel("Jewel Suite - Gas Volume Calculator");
-        title.setFont(TITLE_FONT);
+        title.setFont(Setting.TITLE_FONT);
         title.setForeground(Color.BLACK);
         topBar.add(title, gbc);
 
@@ -86,7 +81,7 @@ public class JewelSuiteGUI extends JFrame {
                 "Legend",
                 TitledBorder.LEFT,
                 TitledBorder.TOP,
-                SUB_FONT,
+                Setting.SUB_FONT,
                 Setting.PRIMARY_COLOR
         ));
         legendPanel.setLayout(new BoxLayout(legendPanel, BoxLayout.Y_AXIS));
@@ -121,7 +116,7 @@ public class JewelSuiteGUI extends JFrame {
         };
         colorBox.setPreferredSize(new Dimension(26, 26));
         JLabel label = new JLabel(text);
-        label.setFont(MAIN_FONT);
+        label.setFont(Setting.MAIN_FONT);
         item.add(colorBox);
         item.add(label);
         return item;
@@ -136,7 +131,7 @@ public class JewelSuiteGUI extends JFrame {
         JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
         leftPanel.setOpaque(false);
         loadFileButton = new JButton("Open File");
-        loadFileButton.setFont(SUB_FONT);
+        loadFileButton.setFont(Setting.SUB_FONT);
         loadFileButton.setBackground(Setting.PRIMARY_COLOR);
         loadFileButton.setForeground(Color.BLACK);
         loadFileButton.setFocusPainted(false);
@@ -148,7 +143,7 @@ public class JewelSuiteGUI extends JFrame {
         leftPanel.add(loadFileButton);
 
         fileStatusField = new JTextField("No file selected", 15);
-        fileStatusField.setFont(MAIN_FONT);
+        fileStatusField.setFont(Setting.MAIN_FONT);
         fileStatusField.setForeground(Color.GRAY);
         fileStatusField.setEditable(false);
         fileStatusField.setBorder(BorderFactory.createCompoundBorder(
@@ -160,21 +155,21 @@ public class JewelSuiteGUI extends JFrame {
         JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 0));
         rightPanel.setOpaque(false);
         JLabel fluidLabel = new JLabel("Fluid Contact Depth:");
-        fluidLabel.setFont(SUB_FONT);
+        fluidLabel.setFont(Setting.SUB_FONT);
         rightPanel.add(fluidLabel);
         fluidContactField = new JTextField("2500", 8);
-        fluidContactField.setFont(MAIN_FONT);
+        fluidContactField.setFont(Setting.MAIN_FONT);
         fluidContactField.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1, true),
                 BorderFactory.createEmptyBorder(6, 10, 6, 10)));
         rightPanel.add(fluidContactField);
         JLabel meterLabel = new JLabel("meters");
-        meterLabel.setFont(MAIN_FONT);
+        meterLabel.setFont(Setting.MAIN_FONT);
         rightPanel.add(meterLabel);
         calculateButton = new JButton("Calculate");
-        calculateButton.setFont(SUB_FONT);
+        calculateButton.setFont(Setting.SUB_FONT);
         calculateButton.setBackground(Setting.ACCENT_COLOR);
-        calculateButton.setForeground(Color.BLACK);
+        calculateButton.setForeground(Color.WHITE);
         calculateButton.setFocusPainted(false);
         calculateButton.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(Setting.ACCENT_COLOR, 1, true),
