@@ -6,4 +6,9 @@ public class Setting {
     public static final java.awt.Color NO_GAS_COLOR = new java.awt.Color(244, 67, 54); // Red (เดิม)
     public static final java.awt.Color LOW_GAS_COLOR = new java.awt.Color(255, 235, 59); // Yellow (เดิม)
     public static final java.awt.Color HIGH_GAS_COLOR = new java.awt.Color(76, 175, 80); // Green (เดิม)
+    
+    // Fonts
+    public static final java.awt.Font MAIN_FONT = new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 16);
+    public static final java.awt.Font TITLE_FONT = new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 26);
+    public static final java.awt.Font SUB_FONT = new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 18);
 }
