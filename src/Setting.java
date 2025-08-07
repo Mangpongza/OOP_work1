@@ -1,14 +1,18 @@
+import java.awt.*;
+
+// คลาสสำหรับเก็บค่าคงที่ต่างๆ เช่น สีและฟอนต์
+// ช่วยให้โค้ดหลักสะอาดขึ้นและแก้ไขค่าต่างๆ ได้ง่าย
 public class Setting {
-    public static final String loadFileButton ="Load file";
-    public static final java.awt.Color PRIMARY_COLOR = new java.awt.Color(101, 67, 33); // Brown
-    public static final java.awt.Color SECONDARY_COLOR = new java.awt.Color(222, 184, 135); // Burlywood (อ่อน)
-    public static final java.awt.Color ACCENT_COLOR = new java.awt.Color(160, 82, 45); // Sienna (น้ำตาลเข้ม)
-    public static final java.awt.Color NO_GAS_COLOR = new java.awt.Color(244, 67, 54); // Red (เดิม)
-    public static final java.awt.Color LOW_GAS_COLOR = new java.awt.Color(255, 235, 59); // Yellow (เดิม)
-    public static final java.awt.Color HIGH_GAS_COLOR = new java.awt.Color(76, 175, 80); // Green (เดิม)
-    
-    // Fonts
-    public static final java.awt.Font MAIN_FONT = new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 16);
-    public static final java.awt.Font TITLE_FONT = new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 26);
-    public static final java.awt.Font SUB_FONT = new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 18);
+    public static final Color PRIMARY_COLOR = new Color(95, 169, 241);
+    public static final Color SECONDARY_COLOR = new Color(138, 193, 230);
+    public static final Color ACCENT_COLOR = new Color(138, 211, 227);
+    public static final Color TEXT_COLOR = new Color(0, 0, 0);
+
+    public static final Color NO_GAS_COLOR = new Color(255, 0, 0);
+    public static final Color LOW_GAS_COLOR = new Color(237, 255, 0);
+    public static final Color HIGH_GAS_COLOR = new Color(4, 255, 0);
+
+    public static final Font TITLE_FONT = new Font("Segoe UI", Font.BOLD, 28);
+    public static final Font SUB_FONT = new Font("Segoe UI", Font.BOLD, 16);
+    public static final Font MAIN_FONT = new Font("Segoe UI", Font.PLAIN, 14);
 }
