@@ -1,5 +1,4 @@
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,6 +8,7 @@ class BottomBarPanel extends JPanel {
     private JTextField fluidContactField;
     private JButton loadFileButton;
     private JButton calculateButton;
+    private JButton clearbutton = createButtonclearButton();
     private JTextField fileStatusField;
     private ActionListener loadFileListener;
     private ActionListener calculateListener;
@@ -45,9 +45,10 @@ class BottomBarPanel extends JPanel {
 
         loadFileButton = createLoadFileButton();
         fileStatusField = createFileStatusField();
-
+        clearbutton = createButtonclearButton();
         panel.add(loadFileButton);
         panel.add(fileStatusField);
+        panel.add(clearbutton);
 
         return panel;
     }
@@ -98,6 +99,29 @@ class BottomBarPanel extends JPanel {
                 BorderFactory.createEmptyBorder(6, 10, 6, 10)));
         return textField;
     }
+    private JButton createButtonclearButton()
+    {
+        JButton clear = new JButton("Clear file");
+        clear.setFont(Setting.SUB_FONT);
+        clear.setBackground(Setting.PRIMARY_COLOR);
+        clear.setForeground(Color.BLACK);
+        clear.setFocusPainted(false);
+        clear.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Setting.PRIMARY_COLOR, 1, true),
+                BorderFactory.createEmptyBorder(8, 18, 8, 18)));
+        clear.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        AbstractButton clearButton;
+        clear.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // เคลียร์ไฟล์ทั้งหมด
+                fileStatusField.setText("No file selected");
+                calculateButton.setEnabled(false);
+            }
+        });
+        return clear;
+    }
+
 
     private JTextField createFluidContactField() {
         JTextField textField = new JTextField("2500", 8);

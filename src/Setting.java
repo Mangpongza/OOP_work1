@@ -7,6 +7,7 @@ public class Setting {
     public static final Color SECONDARY_COLOR = new Color(138, 193, 230);
     public static final Color ACCENT_COLOR = new Color(138, 211, 227);
     public static final Color TEXT_COLOR = new Color(0, 0, 0);
+    public static final Color FILE_COLOR = new Color(39, 66, 255);
 
     public static final Color NO_GAS_COLOR = new Color(255, 0, 0);
     public static final Color LOW_GAS_COLOR = new Color(237, 255, 0);

@@ -72,7 +72,6 @@ class CenterPanel extends JPanel {
 
         panel.add(Box.createVerticalStrut(2));
         panel.add(createLegendItem(Setting.NO_GAS_COLOR, "No Gas (0%)"));
-
         panel.add(Box.createVerticalStrut(2));
         panel.add(createLegendItem(Setting.LOW_GAS_COLOR, "Low Gas (<50%)"));
         panel.add(Box.createVerticalStrut(2));

@@ -1,6 +1,6 @@
 
         // clearButton
-        JButton clearButton = new JButton("Clear");
+       /* JButton clearButton = new JButton("Clear");
         clearButton.setFont(SUB_FONT);
         clearButton.setBackground(Color.WHITE); // หรือใช้ Setting.COLOR ตามสไตล์คุณ
         clearButton.setForeground(Color.BLACK);
@@ -17,5 +17,5 @@
                 calculateButton.setEnabled(false);
             }
         });
-        leftPanel.add(clearButton);
+        leftPanel.add(clearButton);*/
 

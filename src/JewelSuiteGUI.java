@@ -44,7 +44,7 @@ public class JewelSuiteGUI extends JFrame {
             if (fileChooser.showOpenDialog(JewelSuiteGUI.this) == JFileChooser.APPROVE_OPTION) {
                 String fileName = fileChooser.getSelectedFile().getName();
                 bottomBar.getFileStatusField().setText(fileName);
-                bottomBar.getFileStatusField().setForeground(Setting.PRIMARY_COLOR);
+                bottomBar.getFileStatusField().setForeground(Setting.FILE_COLOR);
                 bottomBar.getCalculateButton().setEnabled(true);
                 centerPanel.updateGridWithSampleData(); // อัปเดต grid
             }
