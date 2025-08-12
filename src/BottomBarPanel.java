@@ -12,11 +12,12 @@ class BottomBarPanel extends JPanel {
     private JTextField fileStatusField;
     private ActionListener loadFileListener;
     private ActionListener calculateListener;
-
-    public BottomBarPanel(ActionListener loadFileListener, ActionListener calculateListener) {
+    private ActionListener clearFileListener;
+    public BottomBarPanel(ActionListener loadFileListener, ActionListener calculateListener, ActionListener clearFileListener) {
         super(new BorderLayout(20, 0));
         this.loadFileListener = loadFileListener;
         this.calculateListener = calculateListener;
+        this.clearFileListener = clearFileListener;
         setBackground(Setting.SECONDARY_COLOR);
         setBorder(BorderFactory.createEmptyBorder(18, 30, 18, 30));
 
@@ -110,21 +111,13 @@ class BottomBarPanel extends JPanel {
                 BorderFactory.createLineBorder(Setting.PRIMARY_COLOR, 1, true),
                 BorderFactory.createEmptyBorder(8, 18, 8, 18)));
         clear.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        AbstractButton clearButton;
-        clear.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // เคลียร์ไฟล์ทั้งหมด
-                fileStatusField.setText("No file selected");
-                calculateButton.setEnabled(false);
-            }
-        });
+
         return clear;
     }
 
 
     private JTextField createFluidContactField() {
-        JTextField textField = new JTextField("2500", 8);
+        JTextField textField = new JTextField(String.valueOf(Setting.Fluid), 8);
         textField.setFont(Setting.MAIN_FONT);
         textField.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1, true),

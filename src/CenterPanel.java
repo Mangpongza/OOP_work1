@@ -1,11 +1,9 @@
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Random;
 
 // คลาสสำหรับสร้างและจัดการส่วนกลางของหน้าจอ
 class CenterPanel extends JPanel {
@@ -18,7 +16,6 @@ class CenterPanel extends JPanel {
         System.out.println(text);
         info.setText(text);
     }
-
 
     public CenterPanel() {
         setBackground(Setting.SECONDARY_COLOR);
@@ -41,7 +38,6 @@ class CenterPanel extends JPanel {
             for (int c = 0; c < grid[0].length; c++) {
                 double value = grid[r][c];
                 double percent = Cal(value);
-                String percentText = String.format("%.2f%%", percent);
                 String percentUI = String.format("%.1f%%", percent);
                 JLabel label = new JLabel(percentUI, SwingConstants.CENTER);
                 label.setBorder(BorderFactory.createLineBorder(Color.GRAY));
@@ -49,11 +45,11 @@ class CenterPanel extends JPanel {
                     label.setBackground(Setting.NO_GAS_COLOR);// สีพื้นหลังที่คุณกำหนด
                     label.setOpaque(true);
                 }
-                if (percent == 1) {
+                if (percent < 50 && percent != 0) {
                     label.setBackground(Setting.LOW_GAS_COLOR);// สีพื้นหลังที่คุณกำหนด
                     label.setOpaque(true);
                 }
-                if (percent == 2) {
+                if (percent >= 50) {
                     label.setBackground(Setting.HIGH_GAS_COLOR);// สีพื้นหลังที่คุณกำหนด
                     label.setOpaque(true);
                 }
@@ -90,39 +86,19 @@ class CenterPanel extends JPanel {
 
 
     private double Cal(double base){
-        double top = base - Setting.Top; //2204
-
-        double total = base - top; //2404-2204 =  200
-
-
+        double top = base - Setting.Top;
+        double total = base - top; // This will always equal Setting.Top
         double gas = Math.max(0, Math.min(Setting.Fluid, base) - top);
-
-        if (gas / total <= 0) return 0;
-        if (gas / total < 0.5) return 1;
-        return 2;
+        return gas / total * 100;
     }
     private double Calvalum(double base){
         double top = base - Setting.Top;
-        double dept  = Math.min(Setting.Fluid,base)- top;
-        double volume= Setting.CellSize*Setting.CellSize*dept;
-
-
+        double dept = Math.min(Setting.Fluid, base) - top;
+        double volume = Setting.CellSize * Setting.CellSize * dept;
         return volume;
     }
 
-
-    public void updateGridWithSampleData() {
-        gridPanel.removeAll();
-        gridPanel.setLayout(new GridLayout(rows, cols, 2, 2));
-        for (int i = 0; i < rows * cols; i++) {
-            gridPanel.add(new GridCellPanel());
-        }
-        gridPanel.revalidate();
-        gridPanel.repaint();
-
-    }
-
-    private void createEmptyGrid() {
+    void createEmptyGrid() {
         gridPanel.removeAll();
         for (int i = 0; i < rows * cols; i++) {
             JPanel cell = new JPanel();
@@ -184,62 +160,7 @@ class CenterPanel extends JPanel {
         item.add(label);
         return item;
     }
-
-}
-
-// คลาสสำหรับสร้างและจัดการแต่ละ Cell ใน Grid
-class GridCellPanel extends JPanel {
-    public GridCellPanel() {
-        super(new BorderLayout());
-
-        setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        setPreferredSize(new Dimension(50, 40));
-
-        // Randomly determine cell properties
-        double random = Math.random();
-        Color cellColor;
-        String percentage;
-        String volume;
-        if (random < 0.3) {
-            cellColor = Setting.NO_GAS_COLOR;
-            percentage = "0%";
-            volume = "0";
-        } else if (random < 0.65) {
-            cellColor = Setting.LOW_GAS_COLOR;
-            percentage = "25%";
-            volume = "562";
-        } else {
-            cellColor = Setting.HIGH_GAS_COLOR;
-            percentage = "75%";
-            volume = "1688";
-        }
-
-        setBackground(cellColor);
-        Color textColor = (cellColor.equals(Setting.LOW_GAS_COLOR)) ? Color.BLACK : Color.WHITE;
-
-        JLabel percentLabel = new JLabel(percentage, JLabel.CENTER);
-        percentLabel.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        percentLabel.setForeground(textColor);
-
-        JLabel volumeLabel = new JLabel(volume, JLabel.CENTER);
-        volumeLabel.setFont(new Font("Segoe UI", Font.PLAIN, 11));
-        volumeLabel.setForeground(textColor);
-
-        add(percentLabel, BorderLayout.CENTER);
-        add(volumeLabel, BorderLayout.SOUTH);
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                setCursor(new Cursor(Cursor.HAND_CURSOR));
-                CenterPanel.setInfo("เปอร์เซ็นต์: " + percentage + ", ปริมาตร: " + volume);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-            }
-        });
-
+    public void setFluidContact(double fluidContact) {
+        Setting.Fluid = fluidContact;
     }
-
 }

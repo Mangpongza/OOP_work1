@@ -3,7 +3,7 @@ import java.awt.*;
 // คลาสสำหรับเก็บค่าคงที่ต่างๆ เช่น สีและฟอนต์
 // ช่วยให้โค้ดหลักสะอาดขึ้นและแก้ไขค่าต่างๆ ได้ง่าย
 public class Setting {
-    public  static final Double Fluid  = 2500.0;
+    public  static Double Fluid  = 2500.0;
     public  static final int Top  = 200;
     public  static final int CellSize  = 150;
 
