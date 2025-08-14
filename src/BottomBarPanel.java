@@ -100,8 +100,7 @@ class BottomBarPanel extends JPanel {
                 BorderFactory.createEmptyBorder(6, 10, 6, 10)));
         return textField;
     }
-    private JButton createButtonclearButton()
-    {
+    private JButton createButtonclearButton() {
         JButton clear = new JButton("Clear file");
         clear.setFont(Setting.SUB_FONT);
         clear.setBackground(Setting.PRIMARY_COLOR);
@@ -111,6 +110,14 @@ class BottomBarPanel extends JPanel {
                 BorderFactory.createLineBorder(Setting.PRIMARY_COLOR, 1, true),
                 BorderFactory.createEmptyBorder(8, 18, 8, 18)));
         clear.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        clear.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                clear.addActionListener(clearFileListener);
+            }
+        });
+
+
 
         return clear;
     }

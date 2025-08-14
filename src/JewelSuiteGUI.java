@@ -104,7 +104,6 @@ public class JewelSuiteGUI extends JFrame {
             try {
                 double fluidContact = Double.parseDouble(bottomBar.getFluidContactField().getText());
                 centerPanel.setFluidContact(fluidContact);
-
                 if (grid != null) {
                     // ถ้าค่าเปลี่ยน ให้แสดงผล
                     JOptionPane.showMessageDialog(
