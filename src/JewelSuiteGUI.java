@@ -26,17 +26,15 @@ public class JewelSuiteGUI extends JFrame {
 
         // สร้างและเพิ่ม Panels ย่อย
         add(new TopBarPanel(), BorderLayout.NORTH);
-
         centerPanel = new CenterPanel();
         add(centerPanel, BorderLayout.CENTER);
-
         // ส่ง Listener ให้ BottomBarPanel
         ActionListener loadFileListener = new LoadFileListener();
         ActionListener calculateListener = new CalculateListener();
-        // สร้าง Listener ใหม่สำหรับปุ่ม Clear
-        ActionListener clearFileListener = new ClearFileListener();
-        bottomBar = new BottomBarPanel(loadFileListener, calculateListener, clearFileListener);
+
+        bottomBar = new BottomBarPanel(centerPanel, loadFileListener, calculateListener);
         add(bottomBar, BorderLayout.SOUTH);
+
 
         setLocationRelativeTo(null);
     }
@@ -132,21 +130,8 @@ public class JewelSuiteGUI extends JFrame {
             }
         }
     }
-    private class ClearFileListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            // 1. ล้างข้อมูลไฟล์ที่แสดงใน BottomBar
-            bottomBar.getFileStatusField().setText("No file selected");
-            bottomBar.getFileStatusField().setForeground(Setting.TEXT_COLOR);
 
-            // 2. ล้างข้อมูลใน Grid
-            grid = null; // เคลียร์ข้อมูล grid ใน JewelSuiteGUI
-            centerPanel.createEmptyGrid(); // เรียกเมท็อดเพื่อวาด Grid เปล่าๆ
 
-            // 3. ปิดการใช้งานปุ่ม Calculate
-            bottomBar.getCalculateButton().setEnabled(false);
-        }
-    }
     public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());//บอก Swing ให้ใช้ ธีมของOS เครื่อง ถ้าเปิดใน Windows ก็จะหน้าตาเหมือน Windows

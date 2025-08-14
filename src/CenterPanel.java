@@ -160,6 +160,11 @@ class CenterPanel extends JPanel {
         item.add(label);
         return item;
     }
+
+    public void clearLegend() {
+        info.setText("");
+    }
+
     public void setFluidContact(double fluidContact) {
         Setting.Fluid = fluidContact;
     }

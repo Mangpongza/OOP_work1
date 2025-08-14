@@ -3,8 +3,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+
 // คลาสสำหรับสร้างและจัดการแถบด้านล่าง
 class BottomBarPanel extends JPanel {
+    private CenterPanel centerPanel;
     private JTextField fluidContactField;
     private JButton loadFileButton;
     private JButton calculateButton;
@@ -12,12 +14,11 @@ class BottomBarPanel extends JPanel {
     private JTextField fileStatusField;
     private ActionListener loadFileListener;
     private ActionListener calculateListener;
-    private ActionListener clearFileListener;
-    public BottomBarPanel(ActionListener loadFileListener, ActionListener calculateListener, ActionListener clearFileListener) {
+    public BottomBarPanel(CenterPanel centerPanel, ActionListener loadFileListener, ActionListener calculateListener) {
         super(new BorderLayout(20, 0));
+        this.centerPanel = centerPanel;
         this.loadFileListener = loadFileListener;
         this.calculateListener = calculateListener;
-        this.clearFileListener = clearFileListener;
         setBackground(Setting.SECONDARY_COLOR);
         setBorder(BorderFactory.createEmptyBorder(18, 30, 18, 30));
 
@@ -113,14 +114,19 @@ class BottomBarPanel extends JPanel {
         clear.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                clear.addActionListener(clearFileListener);
-            }
+                // ล้างชื่อไฟล์
+                fileStatusField.setText("No file selected");
+                fileStatusField.setForeground(Color.GRAY);
+                // ล้าง Grid
+                centerPanel.createEmptyGrid();
+                // ล้าง Legend
+                centerPanel.clearLegend();
+                }
         });
-
-
 
         return clear;
     }
+
 
 
     private JTextField createFluidContactField() {
@@ -137,7 +143,6 @@ class BottomBarPanel extends JPanel {
         button.setFont(Setting.SUB_FONT);
         button.setBackground(Setting.ACCENT_COLOR);
         button.setForeground(Color.BLACK);
-        button.setFocusPainted(false);
         button.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(Setting.ACCENT_COLOR, 1, true),
                 BorderFactory.createEmptyBorder(8, 18, 8, 18)));
