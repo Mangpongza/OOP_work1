@@ -22,7 +22,7 @@ public class JewelSuiteGUI extends JFrame {
         setUndecorated(true); // เอา border/title bar ออก
         setLayout(new BorderLayout(0, 0)); // ใช้ layout แบบ BorderLayout
         setSize(1200, 800); // กำหนดขนาดหน้าต่าง
-        getContentPane().setBackground(Setting.SECONDARY_COLOR);  // ตั้งสีพื้นหลัง
+        setBackground(Setting.SECONDARY_COLOR);  // ตั้งสีพื้นหลัง
         // สร้างและเพิ่ม Panels ย่อย
         add(new TopBarPanel(), BorderLayout.NORTH);// แถบด้านบน (top bar)
         centerPanel = new CenterPanel(); //panel ส่วนกลาง

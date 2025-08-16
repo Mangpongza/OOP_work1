@@ -10,13 +10,13 @@ class TopBarPanel extends JPanel {
         setLayout(new GridBagLayout()); // ใช้ GridBagLayout เพื่อจัดวาง component แบบยืดหยุ่น
 
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.fill = GridBagConstraints.HORIZONTAL; //ยืดในแนวนอนเต็มคอลัมน์
         gbc.insets = new Insets(0, 20, 0, 20); // ระยะขอบรอบ component (บน,ซ้าย,ล่าง,ขวา)
 
         // Icon
         JLabel iconLabel = createIconLabel("src/dig.png", 48); // สร้าง label พร้อม icon ขนาด 48px
         gbc.gridx = 0; // อยู่คอลัมน์แรก
-        gbc.insets = new Insets(0, 220, 0, 0); // ขยับมาทางขวา 220px
+        gbc.insets = new Insets(0, 220, 0, 10); // ขยับมาทางขวา 220px
         add(iconLabel, gbc);  // เพิ่ม icon ลง panel
 
         // Title
@@ -42,7 +42,7 @@ class TopBarPanel extends JPanel {
     private JLabel createIconLabel(String imagePath, int size) {  // สร้าง JLabel ที่มี icon
         JLabel label = new JLabel();  // สร้างlabel ว่าง
         ImageIcon icon = new ImageIcon(imagePath); // โหลดรูปจาก path
-        Image img = icon.getImage().getScaledInstance(size, size, Image.SCALE_SMOOTH);// ปรับขนาดรูป
+        Image img = icon.getImage().getScaledInstance(size, size, Image.SCALE_SMOOTH);// ปรับขนาดรูป,เรียบร้อย
         label.setIcon(new ImageIcon(img)); // ใส่รูปเข้า label
         return label;
     }
@@ -63,7 +63,6 @@ class TopBarPanel extends JPanel {
         button.setBorder(BorderFactory.createEmptyBorder(8, 18, 8, 18)); // ระยะขอบด้านใน
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));  // เปลี่ยนเมาส์เป็นรูปมือตอนลากไปโดนปุ่ม
         button.setOpaque(true);  // ให้สีพื้นหลังมองเห็น
-        button.setContentAreaFilled(true);  // เติมสีพื้นหลัง
         button.setBorderPainted(false); // ไม่แสดงเส้นขอบของปุ่ม
         button.addActionListener(e -> System.exit(0)); // กดแล้วปิดโปรแกรม
         return button;

@@ -13,7 +13,7 @@ class CenterPanel extends JPanel {
 
     // ฟังก์ชันตั้งค่า text ของ info label
     public static void setInfo(String text) {
-        System.out.println(text); // แสดงใน console
+        //System.out.println(text); // แสดงใน console
         if (info != null) info.setText(text); // อัปเดตใน GUI
     }
 
@@ -153,7 +153,7 @@ class CenterPanel extends JPanel {
         info = new JLabel("", SwingConstants.CENTER);
         info.setFont(Setting.MAIN_FONT.deriveFont(Font.BOLD, 16f)); // ขนาดใหญ่ 16 และ Bold
         info.setForeground(Color.BLACK); // สีข้อความชัดเจน
-        info.setBorder(BorderFactory.createEmptyBorder(50, 10, 10, 10)); // padding รอบข้อความ
+        info.setBorder(BorderFactory.createEmptyBorder(50, 10, 10, 10)); // padding รอบข้อความ(เว้นระยะห่างจากขอบ)
 
         panel.setLayout(new BorderLayout());
         panel2.setLayout(new GridLayout(3,1,0,50));

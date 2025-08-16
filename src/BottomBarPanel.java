@@ -23,7 +23,7 @@ class BottomBarPanel extends JPanel {
         this.loadFileListener = loadFileListener;
         this.calculateListener = calculateListener;
         setBackground(Setting.SECONDARY_COLOR); // สีพื้นหลัง
-        setBorder(BorderFactory.createEmptyBorder(18, 30, 18, 30)); // margin รอบ panel
+        setBorder(BorderFactory.createEmptyBorder(18, 30, 18, 30)); // เว้นระยะจากขอบ
 
         JPanel leftPanel = createLeftBottomPanel();  // สร้าง panel ซ้าย
         JPanel rightPanel = createRightBottomPanel(); // สร้าง panel ขวา
@@ -42,7 +42,7 @@ class BottomBarPanel extends JPanel {
 
     // สร้าง panel ด้านซ้ายของ BottomBar
     private JPanel createLeftBottomPanel() {
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0)); //เรียงตามแนวนอน เว้น 15 pixels
         panel.setOpaque(false); // ให้พื้นโปร่ง
 
         loadFileButton = createLoadFileButton(); // ปุ่มเปิดไฟล์
@@ -58,8 +58,8 @@ class BottomBarPanel extends JPanel {
 
     // สร้าง panel ด้านขวาของ BottomBar
     private JPanel createRightBottomPanel() {
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 0));
-        panel.setOpaque(false);
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 0)); //เรียงตามแนวนอน เว้น 15 pixels
+        panel.setOpaque(false);// โปร่งใส
 
         JLabel fluidLabel = new JLabel("Fluid Contact Depth:"); // label ข้อความ
         fluidLabel.setFont(Setting.SUB_FONT);
@@ -85,7 +85,7 @@ class BottomBarPanel extends JPanel {
         button.setFont(Setting.SUB_FONT);
         button.setBackground(Setting.PRIMARY_COLOR);
         button.setForeground(Color.BLACK);
-        button.setFocusPainted(false);
+        //button.setFocusPainted(false);
         button.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(Setting.PRIMARY_COLOR, 1, true),
                 BorderFactory.createEmptyBorder(8, 18, 8, 18)));
@@ -112,7 +112,7 @@ class BottomBarPanel extends JPanel {
         clear.setFont(Setting.SUB_FONT);
         clear.setBackground(Setting.PRIMARY_COLOR);
         clear.setForeground(Color.BLACK);
-        clear.setFocusPainted(false);
+        //clear.setFocusPainted(false);
         clear.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(Setting.PRIMARY_COLOR, 1, true),
                 BorderFactory.createEmptyBorder(8, 18, 8, 18)));
