@@ -128,7 +128,6 @@ class CenterPanel extends JPanel {
         for (int i = 0; i < rows * cols; i++) {
             JPanel cell = new JPanel();
             cell.setBackground(Color.WHITE); // สีพื้นขาว
-            cell.setBorder(BorderFactory.createLineBorder(new Color(230, 230, 230), 1)); // เส้นขอบบาง
             gridPanel.add(cell);
         }
 

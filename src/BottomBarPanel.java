@@ -33,9 +33,12 @@ class BottomBarPanel extends JPanel {
     }
 
     // getter สำหรับเข้าถึง field และปุ่มจาก class อื่น
-    public JTextField getFluidContactField() { return fluidContactField; }
-    public JButton getCalculateButton() { return calculateButton; }
-    public JTextField getFileStatusField() { return fileStatusField; }
+    public JTextField getFluidContactField() {
+        return fluidContactField; }
+    public JButton getCalculateButton() {
+        return calculateButton; }
+    public JTextField getFileStatusField() {
+        return fileStatusField; }
 
     // สร้าง panel ด้านซ้ายของ BottomBar
     private JPanel createLeftBottomPanel() {

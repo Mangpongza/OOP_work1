@@ -47,7 +47,6 @@ public class JewelSuiteGUI extends JFrame {
                 bottomBar.getFileStatusField().setText(fileName);  // แสดงชื่อไฟล์ที่เลือก
                 bottomBar.getFileStatusField().setForeground(Setting.FILE_COLOR); // เปลี่ยนสีข้อความไฟล์
                 bottomBar.getCalculateButton().setEnabled(true);  // เปิดปุ่มคำนวณได้
-
                 try {
                     Scanner scan = new Scanner(selectedFile);
                     List<double[]> rowsList = new ArrayList<>();
@@ -67,7 +66,7 @@ public class JewelSuiteGUI extends JFrame {
                                             rowValues[i] = Double.parseDouble(parts[i]);
                                         }
                                     } catch (NumberFormatException ex) {
-                                        // ถ้าไม่ใช่ตัวเลข → เก็บเป็น NaN
+                                        // ถ้าไม่ใช่ตัวเลข เก็บเป็น NaN
                                         rowValues[i] = Double.NaN;
                                     }
                                 }
