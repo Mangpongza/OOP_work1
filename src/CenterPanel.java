@@ -133,8 +133,8 @@ class CenterPanel extends JPanel {
             gridPanel.add(cell);
         }
 
-        gridPanel.revalidate();
-        gridPanel.repaint();
+        gridPanel.revalidate(); //จัด Layout ใหม่
+        gridPanel.repaint(); //show panel ใหม่ให้เห็น
     }
 
     // สร้าง panel สำหรับ grid
