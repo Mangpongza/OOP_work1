@@ -95,7 +95,6 @@ public class JewelSuiteGUI extends JFrame {
                             maxCols = row.length;
                         }
                     }
-
                     // แปลง List → Array 2D
                     int rows = rowsList.size();
                     grid = new double[rows][maxCols];
