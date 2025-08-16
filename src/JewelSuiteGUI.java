@@ -9,49 +9,47 @@ import java.util.Scanner;
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 
 public class JewelSuiteGUI extends JFrame {
-    private CenterPanel centerPanel;
-    private BottomBarPanel bottomBar;
-    private double[][] grid;
+    private CenterPanel centerPanel; //panel ส่วนกลาง ใช้แสดง grid
+    private BottomBarPanel bottomBar;  // panel ส่วนล่าง มีปุ่ม load, calculate, ช่อง text
+    private double[][] grid; // เก็บค่าตารางข้อมูล (2 มิติ)
     public JewelSuiteGUI() {
-        initializeGUI();
+        initializeGUI();// เรียก method สร้าง GUI
     }
 
     private void initializeGUI() {
         setTitle("Jewel Suite - Gas Volume Calculator");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setUndecorated(true);
-        setLayout(new BorderLayout(0, 0));
-        setSize(1200, 800);
-        getContentPane().setBackground(Setting.SECONDARY_COLOR);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // ปิดโปรแกรมเมื่อกด EXIT
+        setUndecorated(true); // เอา border/title bar ออก
+        setLayout(new BorderLayout(0, 0)); // ใช้ layout แบบ BorderLayout
+        setSize(1200, 800); // กำหนดขนาดหน้าต่าง
+        getContentPane().setBackground(Setting.SECONDARY_COLOR);  // ตั้งสีพื้นหลัง
 
         // สร้างและเพิ่ม Panels ย่อย
-        add(new TopBarPanel(), BorderLayout.NORTH);
-        centerPanel = new CenterPanel();
-        add(centerPanel, BorderLayout.CENTER);
+        add(new TopBarPanel(), BorderLayout.NORTH);// แถบด้านบน (top bar)
+        centerPanel = new CenterPanel(); //panel ส่วนกลาง
+        add(centerPanel, BorderLayout.CENTER); // ใส่ panel ตรงกลาง
         // ส่ง Listener ให้ BottomBarPanel
-        ActionListener loadFileListener = new LoadFileListener();
-        ActionListener calculateListener = new CalculateListener();
+        ActionListener loadFileListener = new LoadFileListener();  // กดปุ่ม Load File
+        ActionListener calculateListener = new CalculateListener(); // กดปุ่ม Calculate
 
-        bottomBar = new BottomBarPanel(centerPanel, loadFileListener, calculateListener);
-        add(bottomBar, BorderLayout.SOUTH);
-
-
-        setLocationRelativeTo(null);
+        bottomBar = new BottomBarPanel(centerPanel, loadFileListener, calculateListener); //  เพิ่ม bottom bar พร้อมปุ่ม
+        add(bottomBar, BorderLayout.SOUTH);// ใส่ panel ล่างสุด
+        setLocationRelativeTo(null);   // จัดให้อยู่กลางหน้าจอ
     }
 
-    private class LoadFileListener implements ActionListener {
+    private class LoadFileListener implements ActionListener {  // คลาสย่อย Listener โหลดไฟล์
         @Override
-        public void actionPerformed(ActionEvent e) {
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setCurrentDirectory(new File("src"));
-            fileChooser.setFileFilter(new FileNameExtensionFilter("Text files (*.txt)", "txt"));
+        public void actionPerformed(ActionEvent e) {  // เมื่อกดปุ่ม
+            JFileChooser fileChooser = new JFileChooser(); // สร้างตัวเลือกไฟล์
+            fileChooser.setCurrentDirectory(new File("src"));  // โฟลเดอร์เริ่มต้น
+            fileChooser.setFileFilter(new FileNameExtensionFilter("Text files (*.txt)", "txt")); // รับแค่ filter ไฟล์ .txt
 
-            if (fileChooser.showOpenDialog(JewelSuiteGUI.this) == JFileChooser.APPROVE_OPTION) {
-                File selectedFile = fileChooser.getSelectedFile();
-                String fileName = selectedFile.getName();
-                bottomBar.getFileStatusField().setText(fileName);
-                bottomBar.getFileStatusField().setForeground(Setting.FILE_COLOR);
-                bottomBar.getCalculateButton().setEnabled(true);
+            if (fileChooser.showOpenDialog(JewelSuiteGUI.this) == JFileChooser.APPROVE_OPTION) { // ถ้าเลือกไฟล์แล้วกด OK
+                File selectedFile = fileChooser.getSelectedFile(); // เอาไฟล์ที่เลือกมา
+                String fileName = selectedFile.getName(); // เก็บชื่อไฟล์
+                bottomBar.getFileStatusField().setText(fileName);  // แสดงชื่อไฟล์ที่เลือก
+                bottomBar.getFileStatusField().setForeground(Setting.FILE_COLOR); // เปลี่ยนสีข้อความไฟล์
+                bottomBar.getCalculateButton().setEnabled(true);  // เปิดปุ่มคำนวณได้
 
                 try {
 
