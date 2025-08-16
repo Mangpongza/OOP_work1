@@ -11,7 +11,7 @@ class BottomBarPanel extends JPanel {
     private JTextField fluidContactField; // ช่องกรอก Fluid Contact Depth
     private JButton loadFileButton;       // ปุ่มเลือกไฟล์
     private JButton calculateButton;      // ปุ่มคำนวณ
-    private JButton clearbutton = createButtonclearButton(); // ปุ่มล้างไฟล์และ reset
+    private JButton clearbutton ; //  ปุ่มล้างไฟล์และ reset
     private JTextField fileStatusField;   // แสดงสถานะไฟล์ที่เลือก
     private ActionListener loadFileListener;   // listener สำหรับปุ่มโหลดไฟล์
     private ActionListener calculateListener;  // listener สำหรับปุ่มคำนวณ
@@ -33,12 +33,9 @@ class BottomBarPanel extends JPanel {
     }
 
     // getter สำหรับเข้าถึง field และปุ่มจาก class อื่น
-    public JTextField getFluidContactField() {
-        return fluidContactField; }
-    public JButton getCalculateButton() {
-        return calculateButton; }
-    public JTextField getFileStatusField() {
-        return fileStatusField; }
+    public JTextField getFluidContactField() {return fluidContactField; }
+    public JButton getCalculateButton() {return calculateButton; }
+    public JTextField getFileStatusField() {return fileStatusField; }
 
     // สร้าง panel ด้านซ้ายของ BottomBar
     private JPanel createLeftBottomPanel() {

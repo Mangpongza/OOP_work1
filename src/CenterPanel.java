@@ -11,10 +11,10 @@ class CenterPanel extends JPanel {
     private int cols = 20;    // จำนวนคอลัมน์ default ของ grid
     private static JLabel info; // label แสดงข้อมูลเมื่อ hover cell
 
-    // ฟังก์ชันตั้งค่า text ของ info label
+    // ฟังก์ชันอัปเดตข้อความใน info label
     public static void setInfo(String text) {
         //System.out.println(text); // แสดงใน console
-        if (info != null) info.setText(text); // อัปเดตใน GUI
+        if (info != null) info.setText(text); // ฟังก์ชันอัปเดตข้อความใน info label
     }
 
     // constructor ของ CenterPanel
@@ -36,9 +36,9 @@ class CenterPanel extends JPanel {
         gridPanel.removeAll(); // ลบ grid เก่า
 
         if (grid == null || grid.length == 0) { // ถ้าไม่มีข้อมูล → ไม่สร้าง grid
-            gridPanel.revalidate();
-            gridPanel.repaint();
-            return;
+            gridPanel.revalidate();  // refresh layout
+            gridPanel.repaint();    // วาดใหม่
+            return;   // ออกเลย
         }
 
         int rows = grid.length; // จำนวนแถวจากข้อมูล
@@ -48,22 +48,34 @@ class CenterPanel extends JPanel {
         }
 
         gridPanel.setLayout(new GridLayout(rows, maxCols, 2, 2)); // กำหนด layout ใหม่
-
+        // loop วาด cell ตามข้อมูล
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < maxCols; c++) {
-                if (c >= grid[r].length) { // ถ้า column ไม่มีค่า → cell ว่าง
+                if (c >= grid[r].length) {  // ถ้า column นี้ไม่มีค่า
                     JPanel emptyCell = new JPanel();
-                    emptyCell.setOpaque(true);
-                    gridPanel.add(emptyCell);
+                    gridPanel.add(emptyCell); // ใส่ cell ว่าง
                 } else {
                     double value = grid[r][c]; // ค่าจาก grid
-                    JPanel cell = new JPanel(new BorderLayout());
+                    JPanel cell = new JPanel(new BorderLayout());  // cell ใช้ BorderLayout
                     JLabel label;
                     double percent = 0;
-                    if (Double.isNaN(value)) { // ถ้าเป็น NaN → แสดง 0% สีแดง
+                    if (Double.isNaN(value)) { // ถ้าเป็นข้อมูลไม่ใช่ตัวเลข  แสดง 0% สีแดง
                         label = new JLabel("0%", SwingConstants.CENTER);
                         label.setOpaque(true);
                         label.setBackground(Color.red);
+                        label.addMouseListener(new MouseAdapter() {
+                            @Override
+                            public void mouseEntered(MouseEvent e) {
+                                label.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+                                CenterPanel.setInfo("<html>Percent: 0.00<br>Volume: 0.00</html>");
+                                label.setBorder(new LineBorder(Color.BLACK,3));
+                            }
+                            @Override
+                            public void mouseExited(MouseEvent e) {
+                                label.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+                                label.setBorder(null);
+                            }
+                        });
                     } else {
                         percent = Cal(value); // คำนวณเปอร์เซ็นต์
                         label = new JLabel(String.format("%.0f%%", percent), SwingConstants.CENTER);
@@ -73,23 +85,24 @@ class CenterPanel extends JPanel {
                         if (percent == 0) label.setBackground(Setting.NO_GAS_COLOR);
                         else if (percent < 50) label.setBackground(Setting.LOW_GAS_COLOR);
                         else label.setBackground(Setting.HIGH_GAS_COLOR);
-
                         double finalPercent = percent;
                         // เพิ่ม hover event แสดงข้อมูล
                         label.addMouseListener(new MouseAdapter() {
                             @Override
                             public void mouseEntered(MouseEvent e) {
                                 double volum = Calvalum(value); // คำนวณ volume
-                                if (finalPercent <= 0) volum = 0;
-                                String infoText = String.format("<html>Percent: %.2f<br>Volume: %.2f</html>", finalPercent, volum);  // ใช้ HTML เพื่อขึ้นบรรทัดใหม่
+                                if (finalPercent <= 0 || Double.isNaN(Calvalum(value)))
+                                    volum = 0;
+
+                                String infoText = String.format("<html>Percent: %.2f<br>Volume: %.2f</html>",finalPercent, volum);
                                 CenterPanel.setInfo(infoText);
-                                label.setCursor(new Cursor(Cursor.HAND_CURSOR)); // เปลี่ยน cursor
-                                label.setBorder(new LineBorder(Color.BLACK,3));
+                                label.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                                label.setBorder(new LineBorder(Color.BLACK, 3));
                             }
 
                             @Override
                             public void mouseExited(MouseEvent e) {
-                                label.setCursor(new Cursor(Cursor.DEFAULT_CURSOR)); // คืน cursor
+                                label.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
                                 label.setBorder(null);
                             }
                         });
@@ -100,8 +113,8 @@ class CenterPanel extends JPanel {
                 }
             }
         }
-        gridPanel.revalidate(); // อัปเดต GUI
-        gridPanel.repaint();
+        gridPanel.revalidate(); //จัด Layout ใหม่
+        gridPanel.repaint();  //show panel ใหม่ให้เห็น
     }
 
     // ฟังก์ชันคำนวณเปอร์เซ็นต์ gas
@@ -132,7 +145,7 @@ class CenterPanel extends JPanel {
         }
 
         gridPanel.revalidate(); //จัด Layout ใหม่
-        gridPanel.repaint(); //show panel ใหม่ให้เห็น
+        gridPanel.repaint();  //show panel ใหม่ให้เห็น
     }
 
     // สร้าง panel สำหรับ grid
