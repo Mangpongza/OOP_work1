@@ -53,7 +53,7 @@ class CenterPanel extends JPanel {
             for (int c = 0; c < maxCols; c++) {
                 if (c >= grid[r].length) { // ถ้า column ไม่มีค่า → cell ว่าง
                     JPanel emptyCell = new JPanel();
-                    emptyCell.setOpaque(false);
+                    emptyCell.setOpaque(true);
                     gridPanel.add(emptyCell);
                 } else {
                     double value = grid[r][c]; // ค่าจาก grid
@@ -75,12 +75,11 @@ class CenterPanel extends JPanel {
                         else label.setBackground(Setting.HIGH_GAS_COLOR);
 
                         double finalPercent = percent;
-                        double finalValue = value;
                         // เพิ่ม hover event แสดงข้อมูล
                         label.addMouseListener(new MouseAdapter() {
                             @Override
                             public void mouseEntered(MouseEvent e) {
-                                double volum = Calvalum(finalValue); // คำนวณ volume
+                                double volum = Calvalum(value); // คำนวณ volume
                                 if (finalPercent <= 0) volum = 0;
                                 String infoText = String.format("<html>Percent: %.2f<br>Volume: %.2f</html>", finalPercent, volum);  // ใช้ HTML เพื่อขึ้นบรรทัดใหม่
                                 CenterPanel.setInfo(infoText);
@@ -151,13 +150,18 @@ class CenterPanel extends JPanel {
     private JPanel createLegendPanel() {
         JPanel panel = new JPanel();
         JPanel panel2 = new JPanel();
+
         info = new JLabel("", SwingConstants.CENTER);
         info.setFont(Setting.MAIN_FONT.deriveFont(Font.BOLD, 16f)); // ขนาดใหญ่ 16 และ Bold
         info.setForeground(Color.BLACK); // สีข้อความชัดเจน
-        info.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // padding รอบข้อความ
+        info.setBorder(BorderFactory.createEmptyBorder(50, 10, 10, 10)); // padding รอบข้อความ
+
         panel.setLayout(new BorderLayout());
-        panel2.setLayout(new GridLayout(3,1));
+        panel2.setLayout(new GridLayout(3,1,0,50));
+        panel2.setBorder(BorderFactory.createEmptyBorder(0, 0, 50, 0)); // เว้นขอบล่าง
+
         panel.setBackground(Setting.SECONDARY_COLOR);
+        panel2.setBackground(Setting.SECONDARY_COLOR);
         panel.setBorder(BorderFactory.createTitledBorder(
                 BorderFactory.createLineBorder(Setting.PRIMARY_COLOR, 2, true),
                 "Legend",
@@ -166,12 +170,16 @@ class CenterPanel extends JPanel {
                 Setting.SUB_FONT,
                 Setting.TEXT_COLOR
         ));
+
         panel.setPreferredSize(new Dimension(200, 300));
+
         panel2.add(createLegendItem(Setting.NO_GAS_COLOR, "No Gas (0%)"));
         panel2.add(createLegendItem(Setting.LOW_GAS_COLOR, "Low Gas (<50%)"));
         panel2.add(createLegendItem(Setting.HIGH_GAS_COLOR, "High Gas (≥50%)"));
+
         panel.add(panel2,BorderLayout.SOUTH);
         panel.add(info,BorderLayout.NORTH);
+
         return panel;
     }
 
@@ -181,13 +189,14 @@ class CenterPanel extends JPanel {
         item.setBackground(Setting.SECONDARY_COLOR);
         item.setAlignmentX(Component.LEFT_ALIGNMENT);
 
+
         JPanel colorBox = new JPanel(); // กล่องสี
         colorBox.setBackground(color);
-        colorBox.setPreferredSize(new Dimension(24, 24));
+        colorBox.setPreferredSize(new Dimension(50, 50));
         colorBox.setBorder(new LineBorder(Color.DARK_GRAY, 1));
 
         JLabel label = new JLabel(text); // ข้อความ Legend
-        label.setFont(Setting.MAIN_FONT);
+        label.setFont(Setting.MAIN_FONT.deriveFont(Font.BOLD, 14f));
 
         item.add(colorBox);
         item.add(label);
