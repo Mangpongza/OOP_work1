@@ -79,10 +79,12 @@ public class JewelSuiteGUI extends JFrame {
                     // เช็คว่ามีข้อมูลไหม
                     if (rowsList.isEmpty()) {
                         grid = null; // ไม่สร้าง grid
-                        centerPanel.updateGridWithData(null); // ส่ง null ไปเคลียร์ตาราง
+                        bottomBar.getCalculateButton().setEnabled(false);
+                        bottomBar.getFileStatusField().setText("No file selected");
+                        bottomBar.getFileStatusField().setForeground(Color.GRAY);
                         JOptionPane.showMessageDialog(
                                 JewelSuiteGUI.this,
-                                "ไฟล์นี้ไม่มีข้อมูล (ว่างเปล่า)",
+                                "No Information in file!",
                                 "No Data",
                                 JOptionPane.WARNING_MESSAGE
                         );

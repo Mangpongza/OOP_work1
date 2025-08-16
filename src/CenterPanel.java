@@ -82,7 +82,8 @@ class CenterPanel extends JPanel {
                             public void mouseEntered(MouseEvent e) {
                                 double volum = Calvalum(finalValue); // คำนวณ volume
                                 if (finalPercent <= 0) volum = 0;
-                                CenterPanel.setInfo(String.format("Percent: %.2f Volume: %.2f", finalPercent, volum));
+                                String infoText = String.format("<html>Percent: %.2f<br>Volume: %.2f</html>", finalPercent, volum);  // ใช้ HTML เพื่อขึ้นบรรทัดใหม่
+                                CenterPanel.setInfo(infoText);
                                 label.setCursor(new Cursor(Cursor.HAND_CURSOR)); // เปลี่ยน cursor
                                 label.setBorder(new LineBorder(Color.BLACK,3));
                             }
@@ -150,7 +151,10 @@ class CenterPanel extends JPanel {
     private JPanel createLegendPanel() {
         JPanel panel = new JPanel();
         JPanel panel2 = new JPanel();
-        info = new JLabel(""); // label แสดงข้อมูล
+        info = new JLabel("", SwingConstants.CENTER);
+        info.setFont(Setting.MAIN_FONT.deriveFont(Font.BOLD, 16f)); // ขนาดใหญ่ 16 และ Bold
+        info.setForeground(Color.BLACK); // สีข้อความชัดเจน
+        info.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // padding รอบข้อความ
         panel.setLayout(new BorderLayout());
         panel2.setLayout(new GridLayout(3,1));
         panel.setBackground(Setting.SECONDARY_COLOR);
