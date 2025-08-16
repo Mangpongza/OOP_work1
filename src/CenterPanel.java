@@ -37,7 +37,7 @@ class CenterPanel extends JPanel {
         if (grid == null || grid.length == 0) {
             gridPanel.revalidate();
             gridPanel.repaint();
-    
+
         }
         int rows = grid.length;
         int maxCols = 0;

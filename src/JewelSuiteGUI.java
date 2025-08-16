@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class JewelSuiteGUI extends JFrame {
-    private CenterPanel centerPanel; //panel ส่วนกลาง ใช้แสดง grid
+    private CenterPanel centerPanel; //panel ส่วนกลาง ใช้แสดง Border
     private BottomBarPanel bottomBar;  // panel ส่วนล่าง มีปุ่ม load, calculate, ช่อง text
     private double[][] grid; // เก็บค่าตารางข้อมูล (2 มิติ)
     public JewelSuiteGUI() {
@@ -53,15 +53,28 @@ public class JewelSuiteGUI extends JFrame {
                     List<double[]> rowsList = new ArrayList<>();
                     while (scan.hasNextLine()) {
                         String line = scan.nextLine().trim();
-                        if (!line.isEmpty()) {  // ข้ามบรรทัดว่าง
-                            String[] parts = line.split("\\s+");
-                            double[] rowValues = new double[parts.length];
-                            for (int i = 0; i < parts.length; i++) {
-                                rowValues[i] = Double.parseDouble(parts[i]);
+
+                            if (!line.isEmpty()) {  // ข้ามบรรทัดว่าง
+                                String[] parts = line.split("\\s+");
+                                double[] rowValues = new double[parts.length];
+                                for (int i = 0; i < parts.length; i++) {
+                                    try {
+                                        // ✅ แปลงเป็นเลขจริงเท่านั้น
+                                        if(Double.parseDouble(parts[i]) < 0){
+                                            rowValues[i] = Double.NaN;
+                                        }
+                                        else{
+                                            rowValues[i] = Double.parseDouble(parts[i]);
+                                        }
+                                    } catch (NumberFormatException ex) {
+                                        // ✅ ถ้าไม่ใช่ตัวเลข → เก็บเป็น NaN
+                                        rowValues[i] = Double.NaN;
+                                    }
+                                }
+                                rowsList.add(rowValues);
                             }
-                            rowsList.add(rowValues);
                         }
-                    }
+
                     scan.close();
                     // ✅ เช็คว่ามีข้อมูลไหม
                     if (rowsList.isEmpty()) {
