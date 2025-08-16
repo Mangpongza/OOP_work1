@@ -85,7 +85,7 @@ class BottomBarPanel extends JPanel {
         button.setFont(Setting.SUB_FONT);
         button.setBackground(Setting.PRIMARY_COLOR);
         button.setForeground(Color.BLACK);
-        //button.setFocusPainted(false);
+        button.setFocusPainted(false);
         button.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(Setting.PRIMARY_COLOR, 1, true),
                 BorderFactory.createEmptyBorder(8, 18, 8, 18)));
@@ -112,7 +112,7 @@ class BottomBarPanel extends JPanel {
         clear.setFont(Setting.SUB_FONT);
         clear.setBackground(Setting.PRIMARY_COLOR);
         clear.setForeground(Color.BLACK);
-        //clear.setFocusPainted(false);
+        clear.setFocusPainted(false);
         clear.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(Setting.PRIMARY_COLOR, 1, true),
                 BorderFactory.createEmptyBorder(8, 18, 8, 18)));
@@ -125,6 +125,8 @@ class BottomBarPanel extends JPanel {
                 getCalculateButton().setEnabled(false);   // ปิดปุ่มคำนวณ
                 centerPanel.createEmptyGrid(); // ล้าง grid
                 centerPanel.clearLegend();     // ล้าง legend
+                getFluidContactField().setText("2500.0");
+                Setting.Fluid = 2500.0;
             }
         });
 
