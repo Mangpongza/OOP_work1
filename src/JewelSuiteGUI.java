@@ -59,7 +59,7 @@ public class JewelSuiteGUI extends JFrame {
                                 double[] rowValues = new double[parts.length];
                                 for (int i = 0; i < parts.length; i++) {
                                     try {
-                                        // ✅ แปลงเป็นเลขจริงเท่านั้น
+                                        // แปลงเป็นเลขจริงเท่านั้น
                                         if(Double.parseDouble(parts[i]) < 0){
                                             rowValues[i] = Double.NaN;
                                         }
@@ -67,7 +67,7 @@ public class JewelSuiteGUI extends JFrame {
                                             rowValues[i] = Double.parseDouble(parts[i]);
                                         }
                                     } catch (NumberFormatException ex) {
-                                        // ✅ ถ้าไม่ใช่ตัวเลข → เก็บเป็น NaN
+                                        // ถ้าไม่ใช่ตัวเลข → เก็บเป็น NaN
                                         rowValues[i] = Double.NaN;
                                     }
                                 }
@@ -76,7 +76,7 @@ public class JewelSuiteGUI extends JFrame {
                         }
 
                     scan.close();
-                    // ✅ เช็คว่ามีข้อมูลไหม
+                    // เช็คว่ามีข้อมูลไหม
                     if (rowsList.isEmpty()) {
                         grid = null; // ไม่สร้าง grid
                         centerPanel.updateGridWithData(null); // ส่ง null ไปเคลียร์ตาราง
