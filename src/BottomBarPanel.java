@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 
 // คลาสสำหรับสร้างและจัดการแถบด้านล่าง
 class BottomBarPanel extends JPanel {
+
     private CenterPanel centerPanel;
     private JTextField fluidContactField;
     private JButton loadFileButton;

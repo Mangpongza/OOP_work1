@@ -1,0 +1,4 @@
+2500 NaN 2700 infinity
+2400 2550 -infinity 2750
+abc 2450 2580 def
+2200 2350 2480 null

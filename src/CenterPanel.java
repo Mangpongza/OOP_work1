@@ -32,59 +32,70 @@ class CenterPanel extends JPanel {
 
     public void updateGridWithData(double[][] grid) {
         gridPanel.removeAll();
-        gridPanel.setLayout(new GridLayout(grid.length, grid[0].length, 2, 2));
 
-        for (int r = 0; r < grid.length; r++) {
-            for (int c = 0; c < grid[0].length; c++) {
-                double value = grid[r][c];
-                double percent = Cal(value);
-                String percentUI = String.format("%.0f%%", percent);
-                JLabel label = new JLabel(percentUI, SwingConstants.CENTER);
-                label.setPreferredSize(new Dimension(100, 30));
-                label.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-                if (percent == 0) {
-                    label.setBackground(Setting.NO_GAS_COLOR);// สีพื้นหลังที่คุณกำหนด
-                    label.setOpaque(true);
-                }
-                if (percent < 50 && percent != 0) {
-                    label.setBackground(Setting.LOW_GAS_COLOR);// สีพื้นหลังที่คุณกำหนด
-                    label.setOpaque(true);
-                }
-                if (percent >= 50) {
-                    label.setBackground(Setting.HIGH_GAS_COLOR);// สีพื้นหลังที่คุณกำหนด
-                    label.setOpaque(true);
-                }
+        // ✅ ถ้าไม่มีข้อมูลเลย (grid == null หรือแถว = 0) → ไม่สร้าง grid
+        if (grid == null || grid.length == 0) {
+            gridPanel.revalidate();
+            gridPanel.repaint();
+    
+        }
+        int rows = grid.length;
+        int maxCols = 0;
+        for (double[] row : grid) {
+            if (row.length > maxCols) maxCols = row.length;
+        }
+        gridPanel.setLayout(new GridLayout(rows, maxCols, 2, 2));
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < maxCols; c++) {
+                if (c >= grid[r].length) {
+                    JPanel emptyCell = new JPanel();
+                    emptyCell.setOpaque(false);
+                    gridPanel.add(emptyCell);
 
-                gridPanel.add(label);
-                label.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseEntered(MouseEvent e) {
-                        label.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                        double volum = Calvalum(value);
-                        if (percent<=0) {
-                            volum = 0;
-                            String infoText = String.format("เปอร์เซ็นต์: %.2f ปริมาตร: %.2f", percent, volum);
-                            CenterPanel.setInfo(infoText);
-                        }
-                        else {
-                            String infoText = String.format("เปอร์เซ็นต์: %.2f ปริมาตร: %.2f", percent, volum);
-                            CenterPanel.setInfo(infoText);
-                        }
+                } else {
+                    double value = grid[r][c];
+                    JPanel cell = new JPanel(new BorderLayout());
+                    JLabel label;
+                    double percent = 0;
+                    if (Double.isNaN(value)) {
+                        label = new JLabel("", SwingConstants.CENTER); // ✅ ถ้าเป็น NaN → แสดงว่างเปล่า ""
+                        label.setOpaque(true);
+                        label.setBackground(Color.WHITE);
+                    } else {
+                        percent = Cal(value);
+                        label = new JLabel(String.format("%.0f%%", percent), SwingConstants.CENTER);
+                        label.setOpaque(true);
+
+                        if (percent == 0) label.setBackground(Setting.NO_GAS_COLOR);
+                        else if (percent < 50) label.setBackground(Setting.LOW_GAS_COLOR);
+                        else label.setBackground(Setting.HIGH_GAS_COLOR);
+
+                        double finalPercent = percent;
+                        double finalValue = value;
+                        label.addMouseListener(new MouseAdapter() {
+                            @Override
+                            public void mouseEntered(MouseEvent e) {
+                                double volum = Calvalum(finalValue);
+                                if (finalPercent <= 0) volum = 0;
+                                CenterPanel.setInfo(String.format("Percent: %.2f Volume: %.2f", finalPercent, volum));
+                                label.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                            }
+
+                            @Override
+                            public void mouseExited(MouseEvent e) {
+                                label.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+                            }
+                        });
                     }
 
-                    @Override
-                    public void mouseExited(MouseEvent e) {
-                        label.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-                    }
-                });
-
+                    cell.add(label, BorderLayout.CENTER);
+                    gridPanel.add(cell);
+                }
             }
         }
-
         gridPanel.revalidate();
         gridPanel.repaint();
     }
-
 
     private double Cal(double base){
         double top = base - Setting.Top;
@@ -99,14 +110,17 @@ class CenterPanel extends JPanel {
         return volume;
     }
 
-    void createEmptyGrid() {
+    public void createEmptyGrid() {
         gridPanel.removeAll();
+        gridPanel.setLayout(new GridLayout(rows, cols, 2, 2));
+
         for (int i = 0; i < rows * cols; i++) {
             JPanel cell = new JPanel();
             cell.setBackground(Color.WHITE);
             cell.setBorder(BorderFactory.createLineBorder(new Color(230, 230, 230), 1));
             gridPanel.add(cell);
         }
+
         gridPanel.revalidate();
         gridPanel.repaint();
     }

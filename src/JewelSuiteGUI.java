@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
-
 public class JewelSuiteGUI extends JFrame {
     private CenterPanel centerPanel; //panel ส่วนกลาง ใช้แสดง grid
     private BottomBarPanel bottomBar;  // panel ส่วนล่าง มีปุ่ม load, calculate, ช่อง text
@@ -25,7 +23,6 @@ public class JewelSuiteGUI extends JFrame {
         setLayout(new BorderLayout(0, 0)); // ใช้ layout แบบ BorderLayout
         setSize(1200, 800); // กำหนดขนาดหน้าต่าง
         getContentPane().setBackground(Setting.SECONDARY_COLOR);  // ตั้งสีพื้นหลัง
-
         // สร้างและเพิ่ม Panels ย่อย
         add(new TopBarPanel(), BorderLayout.NORTH);// แถบด้านบน (top bar)
         centerPanel = new CenterPanel(); //panel ส่วนกลาง
@@ -33,7 +30,6 @@ public class JewelSuiteGUI extends JFrame {
         // ส่ง Listener ให้ BottomBarPanel
         ActionListener loadFileListener = new LoadFileListener();  // กดปุ่ม Load File
         ActionListener calculateListener = new CalculateListener(); // กดปุ่ม Calculate
-
         bottomBar = new BottomBarPanel(centerPanel, loadFileListener, calculateListener); //  เพิ่ม bottom bar พร้อมปุ่ม
         add(bottomBar, BorderLayout.SOUTH);// ใส่ panel ล่างสุด
         setLocationRelativeTo(null);   // จัดให้อยู่กลางหน้าจอ
@@ -45,7 +41,6 @@ public class JewelSuiteGUI extends JFrame {
             JFileChooser fileChooser = new JFileChooser(); // สร้างตัวเลือกไฟล์
             fileChooser.setCurrentDirectory(new File("src"));  // โฟลเดอร์เริ่มต้น
             fileChooser.setFileFilter(new FileNameExtensionFilter("Text files (*.txt)", "txt")); // รับแค่ filter ไฟล์ .txt
-
             if (fileChooser.showOpenDialog(JewelSuiteGUI.this) == JFileChooser.APPROVE_OPTION) { // ถ้าเลือกไฟล์แล้วกด OK
                 File selectedFile = fileChooser.getSelectedFile(); // เอาไฟล์ที่เลือกมา
                 String fileName = selectedFile.getName(); // เก็บชื่อไฟล์
@@ -56,10 +51,9 @@ public class JewelSuiteGUI extends JFrame {
                 try {
                     Scanner scan = new Scanner(selectedFile);
                     List<double[]> rowsList = new ArrayList<>();
-
                     while (scan.hasNextLine()) {
                         String line = scan.nextLine().trim();
-                        if (!line.isEmpty()) {
+                        if (!line.isEmpty()) {  // ข้ามบรรทัดว่าง
                             String[] parts = line.split("\\s+");
                             double[] rowValues = new double[parts.length];
                             for (int i = 0; i < parts.length; i++) {
@@ -69,21 +63,41 @@ public class JewelSuiteGUI extends JFrame {
                         }
                     }
                     scan.close();
-
-                    // จำนวน row = จำนวนบรรทัด
-                    int rows = rowsList.size();
-                    // จำนวน col = จำนวนตัวเลขในบรรทัดแรก
-                    int cols = rowsList.get(0).length;
-
-                    grid = new double[rows][cols];
-                    for (int r = 0; r < rows; r++) {
-                        for (int c = 0; c < cols; c++) {
-                            grid[r][c] = rowsList.get(r)[c];
-                            System.out.println("R" + r + "C" + c + " " + grid[r][c]);
+                    // ✅ เช็คว่ามีข้อมูลไหม
+                    if (rowsList.isEmpty()) {
+                        grid = null; // ไม่สร้าง grid
+                        centerPanel.updateGridWithData(null); // ส่ง null ไปเคลียร์ตาราง
+                        JOptionPane.showMessageDialog(
+                                JewelSuiteGUI.this,
+                                "ไฟล์นี้ไม่มีข้อมูล (ว่างเปล่า)",
+                                "No Data",
+                                JOptionPane.WARNING_MESSAGE
+                        );
+                        return;
+                    }
+                    // หา maxCols ปกติ
+                    int maxCols = 0;
+                    for (double[] row : rowsList) {
+                        if (row.length > maxCols) {
+                            maxCols = row.length;
                         }
                     }
 
+                    // แปลง List → Array 2D
+                    int rows = rowsList.size();
+                    grid = new double[rows][maxCols];
+                    for (int r = 0; r < rows; r++) {
+                        double[] row = rowsList.get(r);
+                        for (int c = 0; c < maxCols; c++) {
+                            if (c < row.length) {
+                                grid[r][c] = row[c];
+                            } else {
+                                grid[r][c] = Double.NaN; // Padding
+                            }
+                        }
+                    }
                     centerPanel.updateGridWithData(grid);
+
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     JOptionPane.showMessageDialog(JewelSuiteGUI.this, "Error reading file", "Error", JOptionPane.ERROR_MESSAGE);
@@ -133,7 +147,8 @@ public class JewelSuiteGUI extends JFrame {
 
     public static void main(String[] args) {
         try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());//บอก Swing ให้ใช้ ธีมของOS เครื่อง ถ้าเปิดใน Windows ก็จะหน้าตาเหมือน Windows
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            //บอก Swing ให้ใช้ ธีมของOS เครื่อง ถ้าเปิดใน Windows ก็จะหน้าตาเหมือน Windows
         } catch (Exception ignored) {}
         new JewelSuiteGUI().setVisible(true);
     }
