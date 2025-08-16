@@ -117,6 +117,7 @@ class BottomBarPanel extends JPanel {
                 // ล้างชื่อไฟล์
                 fileStatusField.setText("No file selected");
                 fileStatusField.setForeground(Color.GRAY);
+                getCalculateButton().setEnabled(false);
                 // ล้าง Grid
                 centerPanel.createEmptyGrid();
                 // ล้าง Legend

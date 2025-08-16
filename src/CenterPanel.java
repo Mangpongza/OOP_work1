@@ -10,16 +10,16 @@ class CenterPanel extends JPanel {
     private JPanel gridPanel;
     private int rows = 10;
     private int cols = 20;
-    private static JLabel info; // ⭐ เปลี่ยนเป็น static
+    private static JLabel info; //
 
-    public static void setInfo(String text) { // ⭐ เปลี่ยนเป็น static
+    public static void setInfo(String text) {
         System.out.println(text);
         info.setText(text);
     }
 
     public CenterPanel() {
         setBackground(Setting.SECONDARY_COLOR);
-        setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30));
+        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         setLayout(new BorderLayout(20, 0));
 
         gridPanel = createGridPanel();
@@ -38,8 +38,9 @@ class CenterPanel extends JPanel {
             for (int c = 0; c < grid[0].length; c++) {
                 double value = grid[r][c];
                 double percent = Cal(value);
-                String percentUI = String.format("%.1f%%", percent);
+                String percentUI = String.format("%.0f%%", percent);
                 JLabel label = new JLabel(percentUI, SwingConstants.CENTER);
+                label.setPreferredSize(new Dimension(100, 30));
                 label.setBorder(BorderFactory.createLineBorder(Color.GRAY));
                 if (percent == 0) {
                     label.setBackground(Setting.NO_GAS_COLOR);// สีพื้นหลังที่คุณกำหนด
@@ -168,4 +169,7 @@ class CenterPanel extends JPanel {
     public void setFluidContact(double fluidContact) {
         Setting.Fluid = fluidContact;
     }
+
+
 }
+

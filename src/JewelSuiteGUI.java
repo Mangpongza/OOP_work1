@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
@@ -52,36 +54,32 @@ public class JewelSuiteGUI extends JFrame {
                 bottomBar.getCalculateButton().setEnabled(true);  // เปิดปุ่มคำนวณได้
 
                 try {
-
                     Scanner scan = new Scanner(selectedFile);
-                    StringBuilder allText = new StringBuilder();
+                    List<double[]> rowsList = new ArrayList<>();
+
                     while (scan.hasNextLine()) {
-                        allText.append(scan.nextLine()).append(" ");
+                        String line = scan.nextLine().trim();
+                        if (!line.isEmpty()) {
+                            String[] parts = line.split("\\s+");
+                            double[] rowValues = new double[parts.length];
+                            for (int i = 0; i < parts.length; i++) {
+                                rowValues[i] = Double.parseDouble(parts[i]);
+                            }
+                            rowsList.add(rowValues);
+                        }
                     }
                     scan.close();
 
+                    // จำนวน row = จำนวนบรรทัด
+                    int rows = rowsList.size();
+                    // จำนวน col = จำนวนตัวเลขในบรรทัดแรก
+                    int cols = rowsList.get(0).length;
 
-                    String[] parts = allText.toString().trim().split("\\s+"); // แยกด้วยช่องว่าง
-                    double[] flatData = new double[parts.length];
-                    for (int i = 0; i < parts.length; i++) {
-                        flatData[i] = Double.parseDouble(parts[i]);
-                        System.out.println(i+" "+ flatData[i]);
-                    }
-
-                    // สร้าง grid 2 มิติ
-                    int rows = 10;
-                    int cols = 20;
                     grid = new double[rows][cols];
-
-                    int index = 0;
                     for (int r = 0; r < rows; r++) {
                         for (int c = 0; c < cols; c++) {
-                            if (index < flatData.length) {
-                                grid[r][c] = flatData[index++];
-                            } else {
-                                grid[r][c] = 0.0; // กรอก 0 ถ้าข้อมูลไม่พอ
-                            }
-                            System.out.println("R"+r+"C"+c+" "+ grid[r][c]);
+                            grid[r][c] = rowsList.get(r)[c];
+                            System.out.println("R" + r + "C" + c + " " + grid[r][c]);
                         }
                     }
 
@@ -89,6 +87,9 @@ public class JewelSuiteGUI extends JFrame {
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     JOptionPane.showMessageDialog(JewelSuiteGUI.this, "Error reading file", "Error", JOptionPane.ERROR_MESSAGE);
+                    bottomBar.getFileStatusField().setText("No file selected");
+                    bottomBar.getFileStatusField().setForeground(Color.GRAY);
+                    bottomBar.getCalculateButton().setEnabled(false);
                 }
             }
         }

@@ -21,4 +21,5 @@ public class Setting {
     public static final Font TITLE_FONT = new Font("Segoe UI", Font.BOLD, 28);
     public static final Font SUB_FONT = new Font("Segoe UI", Font.BOLD, 16);
     public static final Font MAIN_FONT = new Font("Segoe UI", Font.PLAIN, 14);
+
 }
