@@ -84,11 +84,13 @@ class CenterPanel extends JPanel {
                                 if (finalPercent <= 0) volum = 0;
                                 CenterPanel.setInfo(String.format("Percent: %.2f Volume: %.2f", finalPercent, volum));
                                 label.setCursor(new Cursor(Cursor.HAND_CURSOR)); // เปลี่ยน cursor
+                                label.setBorder(new LineBorder(Color.BLACK,3));
                             }
 
                             @Override
                             public void mouseExited(MouseEvent e) {
                                 label.setCursor(new Cursor(Cursor.DEFAULT_CURSOR)); // คืน cursor
+                                label.setBorder(null);
                             }
                         });
                     }
