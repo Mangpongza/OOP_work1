@@ -51,10 +51,6 @@ class CenterPanel extends JPanel {
         // loop วาด cell ตามข้อมูล
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < maxCols; c++) {
-                if (c >= grid[r].length) {  // ถ้า column นี้ไม่มีค่า
-                    JPanel emptyCell = new JPanel();
-                    gridPanel.add(emptyCell); // ใส่ cell ว่าง
-                } else {
                     double value = grid[r][c]; // ค่าจาก grid
                     JPanel cell = new JPanel(new BorderLayout());  // cell ใช้ BorderLayout
                     JLabel label;
@@ -110,7 +106,6 @@ class CenterPanel extends JPanel {
 
                     cell.add(label, BorderLayout.CENTER); // ใส่ label ใน cell
                     gridPanel.add(cell); // เพิ่ม cell ลง gridPanel
-                }
             }
         }
         gridPanel.revalidate(); //จัด Layout ใหม่
